@@ -1,0 +1,241 @@
+# 注意规则在满足自己需求情况下，尽量做到精简，不要过度复杂，以免影响性能。
+# 机场订阅 手搓订阅规则
+proxy-providers:
+  Airport1:
+    url: "机场订阅"
+    type: http
+    interval: 86400
+    health-check:
+      enable: true
+      url: https://www.gstatic.com/generate_204
+      interval: 300
+    proxy: 直连
+
+# 节点信息
+proxies:
+  - {name: 直连, type: direct}
+
+# 全局配置 
+port: 7890 
+socks-port: 7891  
+redir-port: 7892 
+mixed-port: 7893 
+tproxy-port: 7894 
+allow-lan: true
+bind-address: "*"
+ipv6: false
+unified-delay: true
+tcp-concurrent: true
+log-level: warning
+find-process-mode: 'off'
+# interface-name: en0 
+global-client-fingerprint: chrome 
+keep-alive-idle: 600
+keep-alive-interval: 15
+disable-keep-alive: false
+profile: 
+  store-selected: true 
+  store-fake-ip: true 
+
+# 控制面板
+external-controller: 0.0.0.0:9090
+secret: ""
+external-ui: "/etc/mihomo/run/ui"
+external-ui-name: zashboard
+external-ui-url: "https://github.com/Zephyruso/zashboard/archive/refs/heads/gh-pages.zip"
+
+# 嗅探
+sniffer:
+  enable: true
+  sniff:
+    HTTP:
+      ports: [80, 8080-8880]
+      override-destination: true
+    TLS:
+      ports: [443, 8443]
+    QUIC:
+      ports: [443, 8443]
+  force-domain:
+    - "+.v2ex.com"
+  skip-domain:
+    - "+.baidu.com"
+
+# 入站  
+tun:
+  enable: true
+  # system/gvisor/mixed
+  stack: mixed
+  dns-hijack: ["any:53", "tcp://any:53"]
+  auto-route: true
+  auto-redirect: true
+  auto-detect-interface: true
+
+# DNS模块
+dns:
+  enable: true
+  listen: 0.0.0.0:1053
+  ipv6: false
+  respect-rules: true
+  enhanced-mode: fake-ip
+  fake-ip-range: 10.200.0.0/13  # 10.200.0.1 ~ 10.207.255.254
+  fake-ip-filter-mode: blacklist
+  fake-ip-filter:
+    - "rule-set:private_domain,cn_domain"
+    - "+.msftconnecttest.com"
+    - "+.msftncsi.com"
+    - "time.*.com"
+  default-nameserver:
+    - 223.5.5.5
+  proxy-server-nameserver:
+    - https://223.5.5.5/dns-query
+  # namesever尽量用运营商提供的DNS
+  nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+ 
+# 出站策略
+# 注意锚点必须放在引用的上方，可以集中把锚点全部放yaml的顶部。
+pr: &pr {type: select, proxies: [默认代理, 香港最快, 台湾最快, 日本最快, 新加坡最快, 美国最快, 自动选择, 香港节点, 台湾节点, 日本节点, 新加坡节点, 美国节点, 高倍率, 直连]}
+# 建立锚点 该锚点为: 筛选香港节点中 小于等于1倍率 的节点
+hk_s: &hk_s {filter: "(?i)^(?=.*(?:香港|HongKong|Hong Kong|HKG|HK))(?:(?!.*(?:[1-9][.]\\d*(?:x|倍率)|[2-9](?:x|倍率)|[1-9][0-9]+(?:x|倍率))).*(?:(?:[0-1](?:\\.\\d+)?(?:x|倍率))|(?<![\\d.])1(?:x|倍率)|^(?!.*(?:x|倍率)).*)?)$"}
+# 建立锚点 该锚点为: 筛选台湾节点中 小于等于1倍率 的节点
+tw_s: &tw_s {filter: "(?i)^(?=.*(?:台湾|新北|彰化|Taiwan|TWN|TW))(?:(?!.*(?:[1-9][.]\\d*(?:x|倍率)|[2-9](?:x|倍率)|[1-9][0-9]+(?:x|倍率))).*(?:(?:[0-1](?:\\.\\d+)?(?:x|倍率))|(?<![\\d.])1(?:x|倍率)|^(?!.*(?:x|倍率)).*)?)$"}
+# 建立锚点 该锚点为: 筛选日本节点中 小于等于1倍率 的节点
+jp_s: &jp_s {filter: "(?i)^(?=.*(?:日本|川日|东京|大阪|泉日|埼玉|沪日|深日|Japan|JPN|JP))(?:(?!.*(?:[1-9][.]\\d*(?:x|倍率)|[2-9](?:x|倍率)|[1-9][0-9]+(?:x|倍率))).*(?:(?:[0-1](?:\\.\\d+)?(?:x|倍率))|(?<![\\d.])1(?:x|倍率)|^(?!.*(?:x|倍率)).*)?)$"}
+# 建立锚点 该锚点为: 筛选新加坡节点中 小于等于1倍率 的节点
+sg_s: &sg_s {filter: "(?i)^(?=.*(?:新加坡|狮城|Singapore|SGP|SG))(?:(?!.*(?:[1-9][.]\\d*(?:x|倍率)|[2-9](?:x|倍率)|[1-9][0-9]+(?:x|倍率))).*(?:(?:[0-1](?:\\.\\d+)?(?:x|倍率))|(?<![\\d.])1(?:x|倍率)|^(?!.*(?:x|倍率)).*)?)$"}
+# 建立锚点 该锚点为: 筛选美国节点中 小于等于1倍率 的节点
+us_s: &us_s {filter: "(?i)^(?=.*(?:美国|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|UnitedStates|United States|America|USA|US))(?:(?!.*(?:[1-9][.]\\d*(?:x|倍率)|[2-9](?:x|倍率)|[1-9][0-9]+(?:x|倍率))).*(?:(?:[0-1](?:\\.\\d+)?(?:x|倍率))|(?<![\\d.])1(?:x|倍率)|^(?!.*(?:x|倍率)).*)?)$"}
+# 建立锚点 该锚点为: 筛选 大于1倍率 的高倍率节点
+high_rate: &high_rate {filter: ".*(?<![\\d.])([2-9]|[1-9]\\.[1-9][\\d]*)(x|X|倍率).*"}
+# Emby服务,PT服务,国外AI,GitHub,TG电报,国外抖音,奈飞视频,油管视频,谷歌服务,微软服务,苹果服务,SpeedTest,巴哈姆特,SteamCN,国外媒体,全球直连,走向全球
+proxy-groups:
+  - {name: 默认代理, type: select, proxies: [香港最快, 台湾最快, 日本最快, 新加坡最快, 美国最快, 自动选择, 香港节点, 台湾节点, 日本节点, 新加坡节点, 美国节点, 高倍率, 直连] ,include-all: true,}
+  - {name: Emby服务, type: select, proxies: [直连, 香港最快, 香港节点, 默认代理]}
+  - {name: PT服务, type: select, proxies: [直连, 香港最快, 香港节点, 默认代理]}
+  - {name: 国外AI, type: select, proxies: [美国最快, 默认代理, 香港最快, 台湾最快, 日本最快, 新加坡最快, 自动选择, 美国节点, 香港节点, 台湾节点, 日本节点, 新加坡节点, 高倍率, 直连]}
+  - {name: GitHub, type: select, proxies: [直连, 香港最快, 香港节点, 默认代理]}
+  - {name: TG电报, type: select, proxies: [新加坡最快, 香港最快,  美国最快, 新加坡节点, 香港节点, 美国节点, 默认代理]}
+  - {name: 国外抖音, type: select, proxies: [美国最快, 默认代理, 日本最快, 新加坡最快, 自动选择, 美国节点, 日本节点, 新加坡节点, 高倍率]}
+  - {name: 奈飞视频, <<: *pr}
+  - {name: 油管视频, <<: *pr}
+  - {name: 谷歌服务, <<: *pr}
+  - {name: 微软服务, <<: *pr}
+  - {name: 苹果服务, <<: *pr}
+  - {name: SpeedTest, <<: *pr}
+  - {name: 巴哈姆特, <<: *pr}
+  - {name: SteamCN, <<: *pr}
+  - {name: 国外媒体, <<: *pr}
+  - {name: 全球直连, type: select, proxies: [直连, 默认代理]}
+  - {name: 走向全球, <<: *pr}
+
+  - {name: 香港节点, type: select, include-all: true,  <<: *hk_s}
+  - {name: 台湾节点, type: select, include-all: true, <<: *tw_s}
+  - {name: 日本节点, type: select, include-all: true, <<: *jp_s}
+  - {name: 新加坡节点, type: select, include-all: true, <<: *sg_s}
+  - {name: 美国节点, type: select, include-all: true, <<: *us_s}
+  - {name: 高倍率, type: select, include-all: true, <<: *high_rate}
+
+  - {name: 香港最快, type: url-test, include-all: true, tolerance: 20, interval: 300, <<: *hk_s}
+  - {name: 台湾最快, type: url-test, include-all: true, tolerance: 20, interval: 300, <<: *tw_s}
+  - {name: 新加坡最快, type: url-test, include-all: true, tolerance: 20, interval: 300, <<: *sg_s}
+  - {name: 日本最快, type: url-test, include-all: true, tolerance: 20, interval: 300, <<: *jp_s}
+  - {name: 美国最快, type: url-test, include-all: true, tolerance: 20, interval: 300, <<: *us_s}
+  
+  - {name: 自动选择, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "^((?!(直连)).)*$"}
+  # - {name: 全部节点, type: select, include-all: true}
+
+# 规则匹配
+# 此规则部分没有做防泄露处理，因为弊严重大于利！
+# 规则将按照从上到下的顺序匹配，列表顶部的规则优先级高于其底下的规则
+rules:
+# 局域网,自定义走直连,自定义走代理,Emby服务,PT服务,国外AI,GitHub,TG电报,国外抖音,奈飞视频,油管视频,谷歌服务,微软服务,苹果服务,SpeedTest,巴哈姆特,SteamCN,国外媒体,全球直连,走向全球
+  - RULE-SET,private_domain,直连
+  - RULE-SET,go_cn,全球直连
+  - RULE-SET,go_global,走向全球
+  - RULE-SET,emby_service,Emby服务
+  - RULE-SET,pt_service,PT服务
+  - RULE-SET,ai_domain,国外AI
+  - RULE-SET,github_domain,GitHub
+  - RULE-SET,telegram_domain,TG电报
+  - RULE-SET,tiktok_domain,国外抖音
+  - RULE-SET,netflix_domain,奈飞视频
+  - RULE-SET,youtube_domain,油管视频
+  - RULE-SET,google_domain,谷歌服务
+  - RULE-SET,microsoft_domain,微软服务
+  - RULE-SET,apple_domain,苹果服务
+  - RULE-SET,speedtest_domain,SpeedTest
+  - RULE-SET,bahamut_domain,巴哈姆特
+  - RULE-SET,steamcn_domain,SteamCN
+  - RULE-SET,GlobalMedia,国外媒体
+
+  - RULE-SET,cn_domain,全球直连
+  - RULE-SET,gfw_domain,走向全球  
+  - RULE-SET,geolocation-!cn,走向全球
+
+  - RULE-SET,google_ip,谷歌服务,no-resolve
+  - RULE-SET,netflix_ip,奈飞视频,no-resolve
+  - RULE-SET,telegram_ip,TG电报,no-resolve
+  - RULE-SET,cn_ip,全球直连
+  - MATCH,走向全球
+
+# 规则锚点
+rule-anchor:
+  ipcidr_mrs: &ipcidr_mrs {type: http, interval: 86400, behavior: ipcidr, format: mrs}
+  domain_mrs: &domain_mrs {type: http, interval: 86400, behavior: domain, format: mrs}
+  classical_text: &classical_text {type: http, interval: 86400, behavior: classical, format: text}
+  classical_yaml: &classical_yaml {type: http, interval: 86400, behavior: classical, format: yaml}
+# 规则集
+# 局域网,自定义走直连,自定义走代理,Emby服务,PT服务,国外AI,GitHub,TG电报,国外抖音,奈飞视频,油管视频,谷歌服务,微软服务,苹果服务,SpeedTest,巴哈姆特,SteamCN,国外媒体,全球直连,走向全球
+rule-providers: 
+  # 局域网域名
+  private_domain: { <<: *domain_mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/private.mrs"}
+
+  # 自定义走直连
+  go_cn: { <<: *classical_yaml, url: "https://raw.githubusercontent.com/imshonechen/CustomRules/main/forClash/ruleList/go_cn.yaml"}
+  # 自定义走代理
+  go_global: { <<: *classical_yaml, url: "https://raw.githubusercontent.com/imshonechen/CustomRules/main/forClash/ruleList/go_global.yaml"}
+  
+  # Emby
+  emby_service: { <<: *classical_yaml, url: "https://raw.githubusercontent.com/imshonechen/CustomRules/main/forClash/ruleList/emby_service.yaml"}
+  # PT
+  pt_service: { <<: *classical_yaml, url: "https://raw.githubusercontent.com/imshonechen/CustomRules/main/forClash/ruleList/pt_service.yaml"}
+  
+  # 国外AI
+  ai_domain: {  <<: *domain_mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-ai-!cn.mrs" }
+  # github域名
+  github_domain: { <<: *domain_mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/github.mrs"}
+  # 电报域名和IP
+  telegram_domain: { <<: *domain_mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/telegram.mrs"}
+  telegram_ip: { <<: *ipcidr_mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/telegram.mrs"}
+  # tiktok域名
+  tiktok_domain: { <<: *domain_mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/tiktok.mrs"}
+  # 奈飞域名和IP
+  netflix_domain: { <<: *domain_mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/netflix.mrs"}
+  netflix_ip: { <<: *ipcidr_mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/netflix.mrs"}
+  # 油管域名
+  youtube_domain: { <<: *domain_mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/youtube.mrs"}
+  # 谷歌域名和IP
+  google_domain: { <<: *domain_mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/google.mrs"}
+  google_ip: { <<: *ipcidr_mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/google.mrs"}
+  # 微软域名
+  microsoft_domain: { <<: *domain_mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/microsoft.mrs"}
+  # 苹果域名
+  apple_domain: { <<: *domain_mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/apple-cn.mrs"}
+  # speedtest域名
+  speedtest_domain: { <<: *domain_mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/ookla-speedtest.mrs"}
+  # 巴哈姆特域名
+  bahamut_domain: { <<: *domain_mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/bahamut.mrs"}
+  # steamCN域名
+  steamcn_domain: { <<: *domain_mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/steam@cn.yaml"}
+  # 国外媒体域名 
+  GlobalMedia: { <<: *classical_yaml, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/blob/master/rule/Clash/GlobalMedia/GlobalMedia_Classical_No_Resolve.yaml"}
+  # 国外域名
+  gfw_domain: { <<: *domain_mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/gfw.mrs"}
+  geolocation-!cn: { <<: *domain_mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/geolocation-!cn.mrs"}
+  # 国内域名
+  cn_domain: { <<: *domain_mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/cn.mrs"}
+  #国内IP
+  cn_ip: { <<: *ipcidr_mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/cn.mrs"}
+
+
