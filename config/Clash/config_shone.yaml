@@ -65,7 +65,7 @@ tun:
   enable: true
   # system/gvisor/mixed
   stack: mixed
-  dns-hijack: ["any:53", "tcp://any:53"]
+  dns-hijack: [] # 劫持的dns "any:53", "tcp://any:53"
   auto-route: true
   auto-redirect: true
   auto-detect-interface: true
@@ -95,7 +95,7 @@ dns:
  
 # 出站策略
 # 注意锚点必须放在引用的上方，可以集中把锚点全部放yaml的顶部。
-pr: &pr {type: select, proxies: [默认代理, 香港最快, 台湾最快, 日本最快, 新加坡最快, 美国最快, 自动选择, 香港节点, 台湾节点, 日本节点, 新加坡节点, 美国节点, 高倍率, 直连]}
+pr: &pr {type: select, proxies: [默认代理, 香港最快, 台湾最快, 日本最快, 新加坡最快, 美国最快, 故障转移, 香港节点, 台湾节点, 日本节点, 新加坡节点, 美国节点, 高倍率, 直连],include-all-providers: true}
 # 建立锚点 该锚点为: 筛选香港节点中 小于等于1倍率 的节点
 hk_s: &hk_s {filter: "(?i)^(?=.*(?:香港|HongKong|Hong Kong|HKG|HK))(?:(?!.*(?:[1-9][.]\\d*(?:x|倍率)|[2-9](?:x|倍率)|[1-9][0-9]+(?:x|倍率))).*(?:(?:[0-1](?:\\.\\d+)?(?:x|倍率))|(?<![\\d.])1(?:x|倍率)|^(?!.*(?:x|倍率)).*)?)$"}
 # 建立锚点 该锚点为: 筛选台湾节点中 小于等于1倍率 的节点
@@ -108,41 +108,46 @@ sg_s: &sg_s {filter: "(?i)^(?=.*(?:新加坡|狮城|Singapore|SGP|SG))(?:(?!.*(?
 us_s: &us_s {filter: "(?i)^(?=.*(?:美国|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|UnitedStates|United States|America|USA|US))(?:(?!.*(?:[1-9][.]\\d*(?:x|倍率)|[2-9](?:x|倍率)|[1-9][0-9]+(?:x|倍率))).*(?:(?:[0-1](?:\\.\\d+)?(?:x|倍率))|(?<![\\d.])1(?:x|倍率)|^(?!.*(?:x|倍率)).*)?)$"}
 # 建立锚点 该锚点为: 筛选 大于1倍率 的高倍率节点
 high_rate: &high_rate {filter: ".*(?<![\\d.])([2-9]|[1-9]\\.[1-9][\\d]*)(x|X|倍率).*"}
+# 建立锚点 该锚点为: 排除关键关键词的节点
+ef: &ef {exclude-filter: "(?i)剩余|流量|重置|距离|套餐|官网|网址|到期|direct|Traffic|Expire|Reset"}
 # Emby服务,PT服务,国外AI,GitHub,TG电报,国外抖音,奈飞视频,油管视频,谷歌服务,微软服务,苹果服务,SpeedTest,巴哈姆特,SteamCN,国外媒体,全球直连,走向全球
 proxy-groups:
-  - {name: 默认代理, type: select, proxies: [香港最快, 台湾最快, 日本最快, 新加坡最快, 美国最快, 自动选择, 香港节点, 台湾节点, 日本节点, 新加坡节点, 美国节点, 高倍率, 直连] ,include-all: true,}
-  - {name: Emby服务, type: select, proxies: [直连, 香港最快, 香港节点, 默认代理]}
-  - {name: PT服务, type: select, proxies: [直连, 香港最快, 香港节点, 默认代理]}
-  - {name: 国外AI, type: select, proxies: [美国最快, 默认代理, 香港最快, 台湾最快, 日本最快, 新加坡最快, 自动选择, 美国节点, 香港节点, 台湾节点, 日本节点, 新加坡节点, 高倍率, 直连]}
-  - {name: GitHub, type: select, proxies: [直连, 香港最快, 香港节点, 默认代理]}
-  - {name: TG电报, type: select, proxies: [新加坡最快, 香港最快,  美国最快, 新加坡节点, 香港节点, 美国节点, 默认代理]}
-  - {name: 国外抖音, type: select, proxies: [美国最快, 默认代理, 日本最快, 新加坡最快, 自动选择, 美国节点, 日本节点, 新加坡节点, 高倍率]}
-  - {name: 奈飞视频, <<: *pr}
-  - {name: 油管视频, <<: *pr}
-  - {name: 谷歌服务, <<: *pr}
-  - {name: 微软服务, <<: *pr}
-  - {name: 苹果服务, <<: *pr}
-  - {name: SpeedTest, <<: *pr}
-  - {name: 巴哈姆特, <<: *pr}
-  - {name: SteamCN, <<: *pr}
-  - {name: 国外媒体, <<: *pr}
-  - {name: 全球直连, type: select, proxies: [直连, 默认代理]}
-  - {name: 走向全球, <<: *pr}
+  - {name: 默认代理, type: select, proxies: [香港最快, 台湾最快, 日本最快, 新加坡最快, 美国最快, 故障转移, 香港节点, 台湾节点, 日本节点, 新加坡节点, 美国节点, 高倍率, 直连] ,include-all-providers: true, <<: *ef}
 
-  - {name: 香港节点, type: select, include-all: true,  <<: *hk_s}
-  - {name: 台湾节点, type: select, include-all: true, <<: *tw_s}
-  - {name: 日本节点, type: select, include-all: true, <<: *jp_s}
-  - {name: 新加坡节点, type: select, include-all: true, <<: *sg_s}
-  - {name: 美国节点, type: select, include-all: true, <<: *us_s}
-  - {name: 高倍率, type: select, include-all: true, <<: *high_rate}
+  - {name: 香港节点, type: select, include-all: true,  <<: [*hk_s, *ef]}
+  - {name: 台湾节点, type: select, include-all: true, <<: [*tw_s, *ef]}
+  - {name: 日本节点, type: select, include-all: true, <<: [*jp_s, *ef]}
+  - {name: 新加坡节点, type: select, include-all: true, <<: [*sg_s, *ef]}
+  - {name: 美国节点, type: select, include-all: true, <<: [*us_s, *ef]}
+  - {name: 高倍率, type: select, include-all: true, <<: [*high_rate, *ef]}
 
-  - {name: 香港最快, type: url-test, include-all: true, tolerance: 20, interval: 300, <<: *hk_s}
-  - {name: 台湾最快, type: url-test, include-all: true, tolerance: 20, interval: 300, <<: *tw_s}
-  - {name: 新加坡最快, type: url-test, include-all: true, tolerance: 20, interval: 300, <<: *sg_s}
-  - {name: 日本最快, type: url-test, include-all: true, tolerance: 20, interval: 300, <<: *jp_s}
-  - {name: 美国最快, type: url-test, include-all: true, tolerance: 20, interval: 300, <<: *us_s}
+  - {name: Emby服务, type: select, proxies: [直连, 香港最快, 香港节点, 默认代理, 故障转移], include-all-providers: true, <<: *ef}
+  - {name: PT服务, type: select, proxies: [直连, 香港最快, 香港节点, 默认代理, 故障转移], include-all-providers: true, <<: *ef}
+  - {name: 国外AI, type: select, proxies: [美国最快, 默认代理, 故障转移, 香港最快, 台湾最快, 日本最快, 新加坡最快, 美国节点, 香港节点, 台湾节点, 日本节点, 新加坡节点, 高倍率, 直连],include-all-providers: true,  <<: *ef}
+  - {name: GitHub, type: select, proxies: [直连, 香港最快, 默认代理, 故障转移, 香港节点],include-all-providers: true,  <<: *ef}
+  - {name: TG电报, type: select, proxies: [新加坡最快, 默认代理, 故障转移, 香港最快,  美国最快, 新加坡节点, 香港节点, 美国节点, 高倍率],include-all-providers: true,  <<: *ef}
+  - {name: 国外抖音, type: select, proxies: [美国最快, 默认代理, 故障转移, 日本最快, 新加坡最快, 美国节点, 日本节点, 新加坡节点, 高倍率],include-all-providers: true,  <<: *ef}
+  - {name: 奈飞视频, <<: [*pr, *ef]}
+  - {name: 油管视频, <<: [*pr, *ef]}
+  - {name: 谷歌服务, <<: [*pr, *ef]}
+  - {name: 微软服务, <<: [*pr, *ef]}
+  - {name: 苹果服务, <<: [*pr, *ef]}
+  - {name: SpeedTest, <<: [*pr, *ef]}
+  - {name: 巴哈姆特, <<: [*pr, *ef]}
+  - {name: SteamCN, <<: [*pr, *ef]}
+  - {name: 国外媒体, <<: [*pr, *ef]}
+  - {name: 全球直连, type: select, proxies: [直连, 默认代理], <<: *ef}
+  - {name: 走向全球, <<: [*pr, *ef]}
+
   
-  - {name: 自动选择, type: url-test, include-all: true, tolerance: 20, interval: 300, filter: "^((?!(直连)).)*$"}
+  # 这5个最快去除了高倍率节点
+  - {name: 香港最快, type: url-test, include-all: true, tolerance: 20, interval: 300, <<: [*hk_s, *ef]}
+  - {name: 台湾最快, type: url-test, include-all: true, tolerance: 20, interval: 300, <<: [*tw_s, *ef]}
+  - {name: 新加坡最快, type: url-test, include-all: true, tolerance: 20, interval: 300, <<: [*sg_s, *ef]}
+  - {name: 日本最快, type: url-test, include-all: true, tolerance: 20, interval: 300, <<: [*jp_s, *ef]}
+  - {name: 美国最快, type: url-test, include-all: true, tolerance: 20, interval: 300, <<: [*us_s, *ef]}
+  # 故障转移没有去除高倍率
+  - {name: 故障转移, type: fallback, include-all: true, tolerance: 20, interval: 300, filter: "^((?!(直连)).)*$", <<: *ef}
   # - {name: 全部节点, type: select, include-all: true}
 
 # 规则匹配
@@ -227,9 +232,9 @@ rule-providers:
   # 巴哈姆特域名
   bahamut_domain: { <<: *domain_mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/bahamut.mrs"}
   # steamCN域名
-  steamcn_domain: { <<: *domain_mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/steam@cn.yaml"}
+  steamcn_domain: { <<: *domain_mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/steam@cn.mrs"}
   # 国外媒体域名 
-  GlobalMedia: { <<: *classical_yaml, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/blob/master/rule/Clash/GlobalMedia/GlobalMedia_Classical_No_Resolve.yaml"}
+  GlobalMedia: { <<: *classical_yaml, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GlobalMedia/GlobalMedia_Classical_No_Resolve.yaml"}
   # 国外域名
   gfw_domain: { <<: *domain_mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/gfw.mrs"}
   geolocation-!cn: { <<: *domain_mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/geolocation-!cn.mrs"}
