@@ -10,6 +10,92 @@ proxy-providers:
       url: https://www.gstatic.com/generate_204
       interval: 300
     proxy: 直连
+    override:
+      proxy-name:
+        # pattern: 匹配一个或多个连续的Emoji字符
+        # + 表示匹配前面的元素一次或多次
+        - pattern: "[\\x{2600}-\\x{26FF}\\x{2700}-\\x{27BF}\\x{20E3}\\x{200D}\\x{1F1E6}-\\x{1F1FF}\\x{1F300}-\\x{1F6FF}\\x{1F900}-\\x{1FAFF}]+"
+        # target: 将匹配到的Emoji替换为空字符串，从而实现移除
+          target: " "
+        # 统一地区 香港 命名
+        - pattern: '(?i)(.*)(\bHong\s?Kong\b|\bHKG?\b|深港)(.*)'
+          target: '香港 $1$3'
+        # 统一地区 台湾 命名
+        - pattern: '(?i)(.*)(\bTaiwan\b|\bTWN?\b)(.*)'
+          target: '台湾 $1$3'
+        # 统一地区 日本 命名
+        - pattern: '(?i)(.*)(\bJapan\b|\bJPN?\b|沪日)(.*)'
+          target: '日本 $1$3'
+        # 统一地区 韩国 命名
+        - pattern: '(?i)(.*)(\bKorea\b|\bKO?R\b)(.*)'
+          target: '韩国 $1$3'
+        # 统一地区 新加坡 命名
+        - pattern: '(?i)(.*)(\bSingapore\b|\bSGP?\b|狮城)(.*)'
+          target: '新加坡 $1$3'
+        # 统一地区 美国 命名
+        - pattern: '(?i)(.*)(\bUnited\s?States\b|\bUSA?\b|\bAmerica\b)(.*)'
+          target: '美国 $1$3'
+        # 统一地区 马来西亚 命名
+        - pattern: '(?i)(.*)(\bMalaysia\b|\bMYS?\b)(.*)'
+          target: '马来西亚 $1$3'
+        # 统一地区 加拿大 命名
+        - pattern: '(?i)(.*)(\bCanada\b|\bCAN?\b)(.*)'
+          target: '加拿大 $1$3'
+        # 统一地区 越南 命名
+        - pattern: '(?i)(.*)(\bViet\s?Nam\b|\bVNM?\b)(.*)'
+          target: '越南 $1$3'
+        # 统一地区 印度 命名
+        - pattern: '(?i)(.*)(\bIndia\b|\bIND?\b)(.*)'
+          target: '印度 $1$3'
+        # 统一地区 澳大利亚 命名
+        - pattern: '(?i)(.*)(\bAustralia\b|\bAUS?\b)(.*)'
+          target: '澳大利亚 $1$3'
+        # 统一地区 德国 命名
+        - pattern: '(?i)(.*)(\bGermany\b|\bDEU?\b)(.*)'
+          target: '德国 $1$3'
+        # 统一地区 法国 命名
+        - pattern: '(?i)(.*)(\bFrance\b|\bFRA?\b)(.*)'
+          target: '法国 $1$3'
+        # 统一地区 荷兰 命名
+        - pattern: '(?i)(.*)(\bNetherlands\b|\bNLD?\b)(.*)'
+          target: '荷兰 $1$3'
+        # 统一地区 土耳其 命名
+        - pattern: '(?i)(.*)(\bTurkey\b|\bTU?R\b)(.*)'
+          target: '土耳其 $1$3'
+        # 统一地区 乌克兰 命名
+        - pattern: '(?i)(.*)(\bUkraine\b|\bUKR\b|\bUA\b)(.*)'
+          target: '乌克兰 $1$3'
+        # 统一地区 英国 命名
+        - pattern: '(?i)(.*)(\bUnited\s?Kingdom\b|\bGBR?\b)(.*)'
+          target: '英国 $1$3'
+        # 统一地区 泰国 命名
+        - pattern: '(?i)(.*)(\bThailand\b|\bTHA?\b)(.*)'
+          target: '泰国 $1$3'
+        # 统一地区 俄罗斯 命名
+        - pattern: '(?i)(.*)(\bRussian\b|\bRUS?\b)(.*)'
+          target: '俄罗斯 $1$3'
+        # 统一地区 南极洲 命名
+        - pattern: '(?i)(.*)(\bAntarctica\b|\bATA\b|\bAQ\b)(.*)'
+          target: '南极洲 $1$3'
+        # 统一地区 埃及 命名
+        - pattern: '(?i)(.*)(\bEgypt\b|\bEGY?\b)(.*)'
+          target: '埃及 $1$3'
+        # 统一地区 意大利 命名
+        - pattern: '(?i)(.*)(\bItaly\b|\bITA?\b)(.*)'
+          target: '意大利 $1$3'
+        # 统一地区 印尼 命名
+        - pattern: '(?i)(.*)(\bIndonesia\b|\bIDN?\b|\b印度尼西亚\b)(.*)'
+          target: '印尼 $1$3'
+        # 统一地区 澳门 命名
+        - pattern: '(?i)(.*)(\bMacao\b|\bMAC\b|\bMO\b)(.*)'
+          target: '澳门 $1$3'
+        # 统一地区 尼日尼亚 命名
+        - pattern: '(?i)(.*)(\bNigeria\b|\bNGA?\b)(.*)'
+          target: '尼日尼亚 $1$3'
+        # 统一倍率命名
+        - pattern: '(?i)(\d+(?:\.\d+)?)(?:倍|倍率|X)'
+          target: '$1x'
+        
 
 # 节点信息
 proxies:
@@ -97,20 +183,20 @@ dns:
 # 注意锚点必须放在引用的上方，可以集中把锚点全部放yaml的顶部。
 pr: &pr {type: select, proxies: [默认代理, 香港最快, 台湾最快, 日本最快, 新加坡最快, 美国最快, 故障转移, 香港节点, 台湾节点, 日本节点, 新加坡节点, 美国节点, 高倍率, 直连],include-all-providers: true}
 # 建立锚点 该锚点为: 筛选香港节点中 小于等于1倍率 的节点
-hk_s: &hk_s {filter: "(?i)^(?=.*(?:香港|HongKong|Hong Kong|HKG|HK))(?:(?!.*(?:[1-9][.]\\d*(?:x|倍率)|[2-9](?:x|倍率)|[1-9][0-9]+(?:x|倍率))).*(?:(?:[0-1](?:\\.\\d+)?(?:x|倍率))|(?<![\\d.])1(?:x|倍率)|^(?!.*(?:x|倍率)).*)?)$"}
+hk_s: &hk_s {filter: "(?i)^(?!.* (1\\.[1-9]|\\d{2,}|[2-9])\\d*(\\.\\d+)?x(\\|.*)?$)(?!.*\\[(1\\.[1-9]|\\d{2,}|[2-9])\\d*(\\.\\d+)?x\\](\\|.*)?$).*香港.*"}
 # 建立锚点 该锚点为: 筛选台湾节点中 小于等于1倍率 的节点
-tw_s: &tw_s {filter: "(?i)^(?=.*(?:台湾|新北|彰化|Taiwan|TWN|TW))(?:(?!.*(?:[1-9][.]\\d*(?:x|倍率)|[2-9](?:x|倍率)|[1-9][0-9]+(?:x|倍率))).*(?:(?:[0-1](?:\\.\\d+)?(?:x|倍率))|(?<![\\d.])1(?:x|倍率)|^(?!.*(?:x|倍率)).*)?)$"}
+tw_s: &tw_s {filter: "(?i)^(?!.* (1\\.[1-9]|\\d{2,}|[2-9])\\d*(\\.\\d+)?x(\\|.*)?$)(?!.*\\[(1\\.[1-9]|\\d{2,}|[2-9])\\d*(\\.\\d+)?x\\](\\|.*)?$).*台湾.*"}
 # 建立锚点 该锚点为: 筛选日本节点中 小于等于1倍率 的节点
-jp_s: &jp_s {filter: "(?i)^(?=.*(?:日本|川日|东京|大阪|泉日|埼玉|沪日|深日|Japan|JPN|JP))(?:(?!.*(?:[1-9][.]\\d*(?:x|倍率)|[2-9](?:x|倍率)|[1-9][0-9]+(?:x|倍率))).*(?:(?:[0-1](?:\\.\\d+)?(?:x|倍率))|(?<![\\d.])1(?:x|倍率)|^(?!.*(?:x|倍率)).*)?)$"}
+jp_s: &jp_s {filter: "(?i)^(?!.* (1\\.[1-9]|\\d{2,}|[2-9])\\d*(\\.\\d+)?x(\\|.*)?$)(?!.*\\[(1\\.[1-9]|\\d{2,}|[2-9])\\d*(\\.\\d+)?x\\](\\|.*)?$).*日本.*"}
 # 建立锚点 该锚点为: 筛选新加坡节点中 小于等于1倍率 的节点
-sg_s: &sg_s {filter: "(?i)^(?=.*(?:新加坡|狮城|Singapore|SGP|SG))(?:(?!.*(?:[1-9][.]\\d*(?:x|倍率)|[2-9](?:x|倍率)|[1-9][0-9]+(?:x|倍率))).*(?:(?:[0-1](?:\\.\\d+)?(?:x|倍率))|(?<![\\d.])1(?:x|倍率)|^(?!.*(?:x|倍率)).*)?)$"}
+sg_s: &sg_s {filter: "(?i)^(?!.* (1\\.[1-9]|\\d{2,}|[2-9])\\d*(\\.\\d+)?x(\\|.*)?$)(?!.*\\[(1\\.[1-9]|\\d{2,}|[2-9])\\d*(\\.\\d+)?x\\](\\|.*)?$).*新加坡.*"}
 # 建立锚点 该锚点为: 筛选美国节点中 小于等于1倍率 的节点
-us_s: &us_s {filter: "(?i)^(?=.*(?:美国|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|UnitedStates|United States|America|USA|US))(?:(?!.*(?:[1-9][.]\\d*(?:x|倍率)|[2-9](?:x|倍率)|[1-9][0-9]+(?:x|倍率))).*(?:(?:[0-1](?:\\.\\d+)?(?:x|倍率))|(?<![\\d.])1(?:x|倍率)|^(?!.*(?:x|倍率)).*)?)$"}
+us_s: &us_s {filter: "(?i)^(?!.* (1\\.[1-9]|\\d{2,}|[2-9])\\d*(\\.\\d+)?x(\\|.*)?$)(?!.*\\[(1\\.[1-9]|\\d{2,}|[2-9])\\d*(\\.\\d+)?x\\](\\|.*)?$).*美国.*"}
 # 建立锚点 该锚点为: 筛选 大于1倍率 的高倍率节点
-high_rate: &high_rate {filter: ".*(?<![\\d.])([2-9]|[1-9]\\.[1-9][\\d]*)(x|X|倍率).*"}
+high_rate: &high_rate {filter: ".*( (1\\.[1-9]|[2-9]|\\d{2,})\\d*(\\.\\d+)?x|\\[(1\\.[1-9]|[2-9]|\\d{2,})\\d*(\\.\\d+)?x\\])(\\|.*)?$"}
 # 建立锚点 该锚点为: 排除关键关键词的节点
 ef: &ef {exclude-filter: "(?i)剩余|流量|重置|距离|套餐|官网|网址|到期|direct|Traffic|Expire|Reset"}
-# Emby服务,PT服务,国外AI,GitHub,TG电报,国外抖音,奈飞视频,油管视频,谷歌服务,微软服务,苹果服务,SpeedTest,巴哈姆特,SteamCN,国外媒体,全球直连,走向全球
+# Emby服务,PT服务,国外AI,GitHub,TG电报,国外抖音,奈飞视频,油管视频,谷歌服务,微软服务,苹果服务,SpeedTest,巴哈姆特,游戏代理,国外媒体,全球直连,走向全球
 proxy-groups:
   - {name: 默认代理, type: select, proxies: [香港最快, 台湾最快, 日本最快, 新加坡最快, 美国最快, 故障转移, 香港节点, 台湾节点, 日本节点, 新加坡节点, 美国节点, 高倍率, 直连] ,include-all-providers: true, <<: *ef}
 
@@ -134,7 +220,7 @@ proxy-groups:
   - {name: 苹果服务, <<: [*pr, *ef]}
   - {name: SpeedTest, <<: [*pr, *ef]}
   - {name: 巴哈姆特, <<: [*pr, *ef]}
-  - {name: SteamCN, <<: [*pr, *ef]}
+  - {name: 游戏代理, <<: [*pr, *ef]}
   - {name: 国外媒体, <<: [*pr, *ef]}
   - {name: 全球直连, type: select, proxies: [直连, 默认代理], <<: *ef}
   - {name: 走向全球, <<: [*pr, *ef]}
@@ -154,7 +240,7 @@ proxy-groups:
 # 此规则部分没有做防泄露处理，因为弊严重大于利！
 # 规则将按照从上到下的顺序匹配，列表顶部的规则优先级高于其底下的规则
 rules:
-# 局域网,自定义走直连,自定义走代理,Emby服务,PT服务,国外AI,GitHub,TG电报,国外抖音,奈飞视频,油管视频,谷歌服务,微软服务,苹果服务,SpeedTest,巴哈姆特,SteamCN,国外媒体,全球直连,走向全球
+# 局域网,自定义走直连,自定义走代理,Emby服务,PT服务,国外AI,GitHub,TG电报,国外抖音,奈飞视频,油管视频,谷歌服务,微软服务,苹果服务,SpeedTest,巴哈姆特,游戏代理,国外媒体,全球直连,走向全球
   - RULE-SET,private_domain,直连
   - RULE-SET,go_cn,全球直连
   - RULE-SET,go_global,走向全球
@@ -171,7 +257,8 @@ rules:
   - RULE-SET,apple_domain,苹果服务
   - RULE-SET,speedtest_domain,SpeedTest
   - RULE-SET,bahamut_domain,巴哈姆特
-  - RULE-SET,steamcn_domain,SteamCN
+  - RULE-SET,steamcn_domain,游戏代理
+  - RULE-SET,epic_domain,游戏代理
   - RULE-SET,GlobalMedia,国外媒体
 
   - RULE-SET,cn_domain,全球直连
@@ -191,7 +278,7 @@ rule-anchor:
   classical_text: &classical_text {type: http, interval: 86400, behavior: classical, format: text}
   classical_yaml: &classical_yaml {type: http, interval: 86400, behavior: classical, format: yaml}
 # 规则集
-# 局域网,自定义走直连,自定义走代理,Emby服务,PT服务,国外AI,GitHub,TG电报,国外抖音,奈飞视频,油管视频,谷歌服务,微软服务,苹果服务,SpeedTest,巴哈姆特,SteamCN,国外媒体,全球直连,走向全球
+# 局域网,自定义走直连,自定义走代理,Emby服务,PT服务,国外AI,GitHub,TG电报,国外抖音,奈飞视频,油管视频,谷歌服务,微软服务,苹果服务,SpeedTest,巴哈姆特,游戏代理,国外媒体,全球直连,走向全球
 rule-providers: 
   # 局域网域名
   private_domain: { <<: *domain_mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/private.mrs"}
@@ -201,9 +288,9 @@ rule-providers:
   # 自定义走代理
   go_global: { <<: *classical_yaml, url: "https://raw.githubusercontent.com/imshonechen/CustomRules/main/forClash/ruleList/go_global.yaml"}
   
-  # Emby
+  # 自定义Emby
   emby_service: { <<: *classical_yaml, url: "https://raw.githubusercontent.com/imshonechen/CustomRules/main/forClash/ruleList/emby_service.yaml"}
-  # PT
+  # 自定义PT
   pt_service: { <<: *classical_yaml, url: "https://raw.githubusercontent.com/imshonechen/CustomRules/main/forClash/ruleList/pt_service.yaml"}
   
   # 国外AI
@@ -233,6 +320,8 @@ rule-providers:
   bahamut_domain: { <<: *domain_mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/bahamut.mrs"}
   # steamCN域名
   steamcn_domain: { <<: *domain_mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/steam@cn.mrs"}
+  # EPIC域名
+  epic_domain: { <<: *domain_mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/epicgames.mrs"}
   # 国外媒体域名 
   GlobalMedia: { <<: *classical_yaml, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GlobalMedia/GlobalMedia_Classical_No_Resolve.yaml"}
   # 国外域名
