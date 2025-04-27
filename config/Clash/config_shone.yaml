@@ -268,8 +268,9 @@ rules:
   - RULE-SET,google_ip,谷歌服务,no-resolve
   - RULE-SET,netflix_ip,奈飞视频,no-resolve
   - RULE-SET,telegram_ip,TG电报,no-resolve
-  - RULE-SET,cn_ip,全球直连
-  - MATCH,走向全球
+  # - RULE-SET,cn_ip,全球直连
+  # 兜底应该走直连还是走代理？全球直连or走向全球
+  - MATCH,全球直连
 
 # 规则锚点
 rule-anchor:
