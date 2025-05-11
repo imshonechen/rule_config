@@ -102,25 +102,45 @@ proxies:
   - {name: 直连, type: direct}
 
 # 全局配置 
+# http(s) 代理端口
 port: 7890 
-socks-port: 7891  
-redir-port: 7892 
-mixed-port: 7893 
+# socks4/4a/5 代理端口
+socks-port: 7891 
+# 混合端口 同时支持 HTTP(S) 和 SOCKS5 协议
+mixed-port: 7892  
+# redirect 透明代理端口，仅能代理 TCP 流量
+redir-port: 7893 
+# tproxy 透明代理端口，可代理 TCP 与 UDP 流量
 tproxy-port: 7894 
+# 允许其他设备经过 Clash 的代理端口访问互联网
 allow-lan: true
+# 绑定所有 IP 地址，允许其他设备通过这个地址访问
 bind-address: "*"
+# 是否允许内核接受 IPv6 流量
 ipv6: false
+# 统一延迟
 unified-delay: true
+# TCP 并发
 tcp-concurrent: true
+# 日志级别
 log-level: warning
+# 匹配进程模式
 find-process-mode: 'off'
+# Clash 的流量出站接口
 # interface-name: en0 
-global-client-fingerprint: chrome 
+# 全局客户端指纹 开启后CPU使用率会提高非常多
+# global-client-fingerprint: chrome 
+# TCP Keep Alive 的最大空闲时间
 keep-alive-idle: 600
+# TCP Keep Alive 包的间隔，单位为秒
 keep-alive-interval: 15
+# 禁用 TCP Keep Alive，在 Android 默认为 true
 disable-keep-alive: false
+# 缓存
 profile: 
+  # 储存 API 对策略组的选择，以供下次启动时使用
   store-selected: true 
+  # 储存 fakeip 映射表，域名再次发生连接时，使用原有映射地址
   store-fake-ip: true 
 
 # 控制面板
@@ -128,7 +148,7 @@ external-controller: 0.0.0.0:9090
 secret: ""
 external-ui: "/etc/mihomo/run/ui"
 external-ui-name: zashboard
-external-ui-url: "https://github.com/Zephyruso/zashboard/archive/refs/heads/gh-pages.zip"
+external-ui-url: "https://github.com/Zephyruso/zashboard/releases/latest/download/dist.zip"
 
 # 嗅探
 sniffer:
