@@ -241,7 +241,7 @@ proxy-groups:
   - {name: SpeedTest, <<: [*pr, *ef]}
   - {name: 巴哈姆特, <<: [*pr, *ef]}
   - {name: 游戏代理, <<: [*pr, *ef]}
-  - {name: Pornbub, <<: [*pr, *ef]}
+  - {name: Pornhub, <<: [*pr, *ef]}
   - {name: 国外媒体, <<: [*pr, *ef]}
   - {name: 全球直连, type: select, proxies: [直连, 默认代理], <<: *ef}
   - {name: 走向全球, <<: [*pr, *ef]}
@@ -280,7 +280,8 @@ rules:
   - RULE-SET,bahamut_domain,巴哈姆特
   - RULE-SET,steamcn_domain,游戏代理
   - RULE-SET,epic_domain,游戏代理
-  - RULE-SET,pornbub_domain,Pornbub
+  - RULE-SET,pornhub_domain,Pornhub
+  - RULE-SET,go_pornhub_domain,Pornhub
   - RULE-SET,GlobalMedia,国外媒体
   
 
@@ -346,8 +347,10 @@ rule-providers:
   steamcn_domain: { <<: *domain_mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/steam@cn.mrs"}
   # EPIC域名
   epic_domain: { <<: *domain_mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/epicgames.mrs"}
-  # pornbub_domain
-  pornbub_domain: { <<: *classical_yaml, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/pornhub.yaml"}
+  # pornhub_domain
+  pornhub_domain: { <<: *classical_yaml, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/meta/geo/geosite/classical/pornhub.yaml"}
+  # 自定义pornhub
+  go_pornhub_domain: { <<: *classical_yaml, url: "https://raw.githubusercontent.com/imshonechen/CustomRules/refs/heads/main/forClash/ruleList/pornhub_domain.yaml"}
   # 国外媒体域名 
   GlobalMedia: { <<: *classical_yaml, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GlobalMedia/GlobalMedia_Classical_No_Resolve.yaml"}
   # 国外域名
