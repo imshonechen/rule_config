@@ -241,6 +241,7 @@ proxy-groups:
   - {name: SpeedTest, <<: [*pr, *ef]}
   - {name: 巴哈姆特, <<: [*pr, *ef]}
   - {name: 游戏代理, <<: [*pr, *ef]}
+  - {name: Pornbub, <<: [*pr, *ef]}
   - {name: 国外媒体, <<: [*pr, *ef]}
   - {name: 全球直连, type: select, proxies: [直连, 默认代理], <<: *ef}
   - {name: 走向全球, <<: [*pr, *ef]}
