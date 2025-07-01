@@ -290,8 +290,9 @@ rules:
   - RULE-SET,go_cn,全球直连
   - RULE-SET,go_global,走向全球
   
-  - RULE-SET,Emby_service,Emby
   - RULE-SET,go_emby,Emby
+  - RULE-SET,loser_service,Emby
+  - RULE-SET,Emby_service,Emby
 
   - RULE-SET,pt_service,PT
   - RULE-SET,GitHub_service,GitHub
