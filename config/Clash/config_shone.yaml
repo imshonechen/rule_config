@@ -387,6 +387,7 @@ rule-providers:
   # Emby
   go_emby: { <<: *classical_yaml, url: "https://raw.githubusercontent.com/imshonechen/CustomRules/main/forClash/ruleList/emby_service.yaml"}
   Emby_service: { <<: *classical_yaml, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Emby/Emby_No_Resolve.yaml"}
+  loser_service: { <<: *classical_text, url: "https://raw.githubusercontent.com/zxcll/sub/refs/heads/main/loser.list"}
   # 自定义PT
   pt_service: { <<: *classical_yaml, url: "https://raw.githubusercontent.com/imshonechen/CustomRules/main/forClash/ruleList/pt_service.yaml"}
   
