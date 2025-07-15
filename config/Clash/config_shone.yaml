@@ -255,6 +255,7 @@ proxy-groups:
   - {name: 微软, type: select, proxies: [香港节点, 直连, 台湾节点, 日本节点, 新加坡节点, 美国节点, 默认代理, 故障转移, 高倍率],include-all-providers: true,  <<: *ef}
   - {name: 苹果, type: select, proxies: [直连, 香港节点, 台湾节点, 日本节点, 新加坡节点, 美国节点, 默认代理, 故障转移, 高倍率], include-all-providers: true, <<: *ef}
   
+  - {name: 游戏定制, type: select, proxies: [直连, 香港节点, 台湾节点, 日本节点, 新加坡节点, 美国节点, 默认代理, 故障转移, 高倍率], include-all-providers: true, <<: *ef}
   - {name: SteamCN, type: select, proxies: [直连, 香港节点, 台湾节点, 日本节点, 新加坡节点, 美国节点, 默认代理, 故障转移, 高倍率], include-all-providers: true, <<: *ef}
   - {name: Steam, type: select, proxies: [香港节点, 直连, 台湾节点, 日本节点, 新加坡节点, 美国节点, 默认代理, 故障转移, 高倍率], include-all-providers: true, <<: *ef}
   - {name: 游戏下载CN, type: select, proxies: [直连, 香港节点, 台湾节点, 日本节点, 新加坡节点, 美国节点, 默认代理, 故障转移, 高倍率], include-all-providers: true, <<: *ef}
@@ -319,7 +320,7 @@ rules:
   - RULE-SET,Microsoft_service,微软
   - RULE-SET,Apple_service,苹果
   
-  
+  - RULE-SET,game_CryoFall,游戏定制
   - RULE-SET,SteamCN_service,SteamCN
   - RULE-SET,Steam_service,Steam
   - RULE-SET,GameDownload_service,游戏下载CN
@@ -431,7 +432,9 @@ rule-providers:
   # 苹果域名
   Apple_service: { <<: *classical_yaml, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Apple/Apple_Classical_No_Resolve.yaml"}
   
-  
+  # 自定义游戏服
+  # 末日觉醒
+  game_CryoFall: { <<: *classical_yaml, url: "https://raw.githubusercontent.com/imshonechen/CustomRules/main/forClash/ruleList/game_CryoFall.yaml"}
   # SteamCN
   SteamCN_service: { <<: *classical_yaml, url: "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/SteamCN/SteamCN_No_Resolve.yaml"}
   # Steam
