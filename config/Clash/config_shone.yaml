@@ -18,80 +18,80 @@ proxy-providers:
         # target: 将匹配到的Emoji替换为空字符串，从而实现移除
           target: " "
         # 统一地区 香港 命名
-        - pattern: '(?i)(.*)(\bHong\s?Kong\b|\bHKG?\b|深港)(.*)'
-          target: '香港 $1$3'
+        - pattern: '(?i)(.*?)(\bHong\s?Kong\b|\bHKG?\b|深港)\s*(香港)?(.*)'
+          target: '$1香港$4'
         # 统一地区 台湾 命名
-        - pattern: '(?i)(.*)(\bTaiwan\b|\bTWN?\b)(.*)'
-          target: '台湾 $1$3'
+        - pattern: '(?i)(.*?)(\bTaiwan\b|\bTWN?\b)\s*(台湾)?(.*)'
+          target: '$1台湾$4'
         # 统一地区 日本 命名
-        - pattern: '(?i)(.*)(\bJapan\b|\bJPN?\b|沪日)(.*)'
-          target: '日本 $1$3'
+        - pattern: '(?i)(.*?)(\bJapan\b|\bJPN?\b|沪日)\s*(日本)?(.*)'
+          target: '$1日本$4'
         # 统一地区 韩国 命名
-        - pattern: '(?i)(.*)(\bKorea\b|\bKO?R\b)(.*)'
-          target: '韩国 $1$3'
+        - pattern: '(?i)(.*?)(\bKorea\b|\bKO?R\b)\s*(韩国)?(.*)'
+          target: '$1韩国$4'
         # 统一地区 新加坡 命名
-        - pattern: '(?i)(.*)(\bSingapore\b|\bSGP?\b|狮城)(.*)'
-          target: '新加坡 $1$3'
+        - pattern: '(?i)(.*?)(\bSingapore\b|\bSGP?\b)\s*(狮城|新加坡)?(.*)'
+          target: '$1新加坡$4'
         # 统一地区 美国 命名
-        - pattern: '(?i)(.*)(\bUnited\s?States\b|\bUSA?\b|\bAmerica\b)(.*)'
-          target: '美国 $1$3'
+        - pattern: '(?i)(.*?)(\bUnited\s?States\b|\bUSA?\b|\bAmerica\b)\s*(美国)?(.*)'
+          target: '$1美国$4'
         # 统一地区 马来西亚 命名
-        - pattern: '(?i)(.*)(\bMalaysia\b|\bMYS?\b)(.*)'
-          target: '马来西亚 $1$3'
+        - pattern: '(?i)(.*?)(\bMalaysia\b|\bMYS?\b)\s*(马来西亚)?(.*)'
+          target: '$1马来西亚$4'
         # 统一地区 加拿大 命名
-        - pattern: '(?i)(.*)(\bCanada\b|\bCAN?\b)(.*)'
-          target: '加拿大 $1$3'
+        - pattern: '(?i)(.*?)(\bCanada\b|\bCAN?\b)\s*(加拿大)?(.*)'
+          target: '$1加拿大$4'
         # 统一地区 越南 命名
-        - pattern: '(?i)(.*)(\bViet\s?Nam\b|\bVNM?\b)(.*)'
-          target: '越南 $1$3'
+        - pattern: '(?i)(.*?)(\bViet\s?Nam\b|\bVNM?\b)\s*(越南)?(.*)'
+          target: '$1越南$4'
         # 统一地区 印度 命名
-        - pattern: '(?i)(.*)(\bIndia\b|\bIND?\b)(.*)'
-          target: '印度 $1$3'
+        - pattern: '(?i)(.*?)(\bIndia\b|\bIND?\b)\s*(印度)?(.*)'
+          target: '$1印度$4'
         # 统一地区 澳大利亚 命名
-        - pattern: '(?i)(.*)(\bAustralia\b|\bAUS?\b)(.*)'
-          target: '澳大利亚 $1$3'
+        - pattern: '(?i)(.*?)(\bAustralia\b|\bAUS?\b)\s*(澳大利亚)?(.*)'
+          target: '$1澳大利亚$4'
         # 统一地区 德国 命名
-        - pattern: '(?i)(.*)(\bGermany\b|\bDEU?\b)(.*)'
-          target: '德国 $1$3'
+        - pattern: '(?i)(.*?)(\bGermany\b|\bDEU?\b)\s*(德国)?(.*)'
+          target: '$1德国$4'
         # 统一地区 法国 命名
-        - pattern: '(?i)(.*)(\bFrance\b|\bFRA?\b)(.*)'
-          target: '法国 $1$3'
+        - pattern: '(?i)(.*?)(\bFrance\b|\bFRA?\b)\s*(法国)?(.*)'
+          target: '$1法国$4'
         # 统一地区 荷兰 命名
-        - pattern: '(?i)(.*)(\bNetherlands\b|\bNLD?\b)(.*)'
-          target: '荷兰 $1$3'
+        - pattern: '(?i)(.*?)(\bNetherlands\b|\bNLD?\b)\s*(荷兰)?(.*)'
+          target: '$1荷兰$4'
         # 统一地区 土耳其 命名
-        - pattern: '(?i)(.*)(\bTurkey\b|\bTU?R\b)(.*)'
-          target: '土耳其 $1$3'
+        - pattern: '(?i)(.*?)(\bTurkey\b|\bTU?R\b)\s*(土耳其)?(.*)'
+          target: '$1土耳其$4'
         # 统一地区 乌克兰 命名
-        - pattern: '(?i)(.*)(\bUkraine\b|\bUKR\b|\bUA\b)(.*)'
-          target: '乌克兰 $1$3'
+        - pattern: '(?i)(.*?)(\bUkraine\b|\bUKR\b|\bUA\b)\s*(乌克兰)?(.*)'
+          target: '$1乌克兰$4'
         # 统一地区 英国 命名
-        - pattern: '(?i)(.*)(\bUnited\s?Kingdom\b|\bGBR?\b)(.*)'
-          target: '英国 $1$3'
+        - pattern: '(?i)(.*?)(\bUnited\s?Kingdom\b|\bGBR?\b)\s*(英国)?(.*)'
+          target: '$1英国$4'
         # 统一地区 泰国 命名
-        - pattern: '(?i)(.*)(\bThailand\b|\bTHA?\b)(.*)'
-          target: '泰国 $1$3'
+        - pattern: '(?i)(.*?)(\bThailand\b|\bTHA?\b)\s*(泰国)?(.*)'
+          target: '$1泰国$4'
         # 统一地区 俄罗斯 命名
-        - pattern: '(?i)(.*)(\bRussian\b|\bRUS?\b)(.*)'
-          target: '俄罗斯 $1$3'
+        - pattern: '(?i)(.*?)(\bRussian\b|\bRUS?\b)\s*(俄罗斯)?(.*)'
+          target: '$1俄罗斯$4'
         # 统一地区 南极洲 命名
-        - pattern: '(?i)(.*)(\bAntarctica\b|\bATA\b|\bAQ\b)(.*)'
-          target: '南极洲 $1$3'
+        - pattern: '(?i)(.*?)(\bAntarctica\b|\bATA\b|\bAQ\b)\s*(南极洲)?(.*)'
+          target: '$1南极洲$4'
         # 统一地区 埃及 命名
-        - pattern: '(?i)(.*)(\bEgypt\b|\bEGY?\b)(.*)'
-          target: '埃及 $1$3'
+        - pattern: '(?i)(.*?)(\bEgypt\b|\bEGY?\b)\s*(埃及)?(.*)'
+          target: '$1埃及$4'
         # 统一地区 意大利 命名
-        - pattern: '(?i)(.*)(\bItaly\b|\bITA?\b)(.*)'
-          target: '意大利 $1$3'
+        - pattern: '(?i)(.*?)(\bItaly\b|\bITA?\b)\s*(意大利)?(.*)'
+          target: '$1意大利$4'
         # 统一地区 印尼 命名
-        - pattern: '(?i)(.*)(\bIndonesia\b|\bIDN?\b|\b印度尼西亚\b)(.*)'
-          target: '印尼 $1$3'
+        - pattern: '(?i)(.*?)(\bIndonesia\b|\bIDN?\b|\b印度尼西亚\b)\s*(印尼)?(.*)'
+          target: '$1印尼$4'
         # 统一地区 澳门 命名
-        - pattern: '(?i)(.*)(\bMacao\b|\bMAC\b|\bMO\b)(.*)'
-          target: '澳门 $1$3'
+        - pattern: '(?i)(.*?)(\bMacao\b|\bMAC\b|\bMO\b)\s*(澳门)?(.*)'
+          target: '$1澳门$4'
         # 统一地区 尼日尼亚 命名
-        - pattern: '(?i)(.*)(\bNigeria\b|\bNGA?\b)(.*)'
-          target: '尼日尼亚 $1$3'
+        - pattern: '(?i)(.*?)(\bNigeria\b|\bNGA?\b)\s*(尼日尼亚)?(.*)'
+          target: '$1尼日尼亚$4'
         # 统一倍率命名
         - pattern: '(?i)(\d+(?:\.\d+)?)(?:倍|倍率|X)'
           target: '$1x'
