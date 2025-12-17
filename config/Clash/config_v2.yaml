@@ -179,8 +179,8 @@ rule-providers:
   # 自定义走国内
   go_cn: {type: http, format: yaml, behavior: classical, url: "https://raw.githubusercontent.com/imshonechen/CustomRules/main/forClash/ruleList/go_cn.yaml", path: ./rules/go_cn.yaml, interval: 86400}
   # EMBY
-  emby_service: {type: http, format: yaml, behavior: domain, url: "https://raw.githubusercontent.com/imshonechen/CustomRules/main/forClash/ruleList/emby_service.yaml", path: ./rules/emby_service.yaml, interval: 86400}
-  loser: {type: http, format: text, behavior: domain, url: "https://raw.githubusercontent.com/zxcll/sub/refs/heads/main/loser.list", path: ./rules/loser.yaml, interval: 86400}
+  emby_service: {type: http, format: yaml, behavior: classical, url: "https://raw.githubusercontent.com/imshonechen/CustomRules/main/forClash/ruleList/emby_service.yaml", path: ./rules/emby_service.yaml, interval: 86400}
+  loser: {type: http, format: text, behavior: classical, url: "https://raw.githubusercontent.com/zxcll/sub/refs/heads/main/loser.list", path: ./rules/loser.list, interval: 86400}
   category-emby: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/category-emby.mrs", path: ./rules/category-emby.mrs, interval: 86400}
   # PT
   pt_service: {type: http, format: yaml, behavior: classical, url: "https://raw.githubusercontent.com/imshonechen/CustomRules/main/forClash/ruleList/pt_service.yaml", path: ./rules/pt_service.yaml, interval: 86400}
