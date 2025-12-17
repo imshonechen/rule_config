@@ -1,0 +1,452 @@
+# =========================
+# 手动节点（可选）
+# =========================
+proxies:
+# 在此粘贴你的节点，格式示例：
+#   - name: 节点名称
+#     type: vless
+#     server: xxx
+#     ...
+
+# =========================
+# 订阅链接（填入后自动拉取节点）
+# =========================
+# 把 url 替换成你的 Clash 订阅链接，不用的订阅保持不变即可
+proxy-providers:
+  订阅1: {type: http, url: "https://ryanvanson.github.io/emptyyaml/empty.yaml", path: ./providers/sub1.yaml, interval: 3600, health-check: {enable: true, url: "https://www.gstatic.com/generate_204", interval: 300, lazy: true}, override: {additional-prefix: 'ᴬ'}}
+  订阅2: {type: http, url: "https://ryanvanson.github.io/emptyyaml/empty.yaml", path: ./providers/sub2.yaml, interval: 3600, health-check: {enable: true, url: "https://www.gstatic.com/generate_204", interval: 300, lazy: true}, override: {additional-prefix: 'ᴮ'}}
+  订阅3: {type: http, url: "https://ryanvanson.github.io/emptyyaml/empty.yaml", path: ./providers/sub3.yaml, interval: 3600, health-check: {enable: true, url: "https://www.gstatic.com/generate_204", interval: 300, lazy: true}, override: {additional-prefix: 'ᶜ'}}
+  订阅4: {type: http, url: "https://ryanvanson.github.io/emptyyaml/empty.yaml", path: ./providers/sub4.yaml, interval: 3600, health-check: {enable: true, url: "https://www.gstatic.com/generate_204", interval: 300, lazy: true}, override: {additional-prefix: 'ᴰ'}}
+  订阅5: {type: http, url: "https://ryanvanson.github.io/emptyyaml/empty.yaml", path: ./providers/sub5.yaml, interval: 3600, health-check: {enable: true, url: "https://www.gstatic.com/generate_204", interval: 300, lazy: true}, override: {additional-prefix: 'ᴱ'}}
+
+# =========================
+# 代理组配置
+# =========================
+# - include-all-proxies: true  包含手动节点
+# - use: [订阅1, 订阅2, 订阅3, 订阅4, 订阅5] 包含订阅节点
+# - domain-strategy: ipv4-only 强制仅使用 IPv4
+# =========================
+
+# 该锚点为: 筛选香港节点中 小于等于1倍率 的节点
+hk_s: &hk_s {filter: '(?i)^(?=.*(?:🇭🇰|香港|HK|HKG|Hong\s*Kong|HongKong))(?!.*(?:^|[^0-9.])(?:1\.(?:0*[1-9]\d*)|[2-9]\d*(?:\.\d+)?|\d{2,}(?:\.\d+)?)(?:\s*)(?:[xX×]|倍|倍率)\b)(?!.*(?:^|[^0-9.])(?:1\.(?:0*[1-9]\d*)|[2-9]\d*\.\d+|[1-9]\d+\.\d+)\s*$).*$'}
+# 该锚点为: 筛选台湾节点中 小于等于1倍率 的节点
+tw_s: &tw_s {filter: '(?i)^(?=.*(?:🇹🇼|台湾|台灣|\bTW\b|\bTWN\b|Taiwan|Taipei))(?!.*(?:^|[^0-9.])(?:1\.(?:0*[1-9]\d*)|[2-9]\d*(?:\.\d+)?|\d{2,}(?:\.\d+)?)(?:\s*)(?:[xX×]|倍|倍率)\b)(?!.*(?:^|[^0-9.])(?:1\.(?:0*[1-9]\d*)|[2-9]\d*\.\d+|[1-9]\d+\.\d+)\s*$).*$'}
+# 该锚点为: 筛选日本节点中 小于等于1倍率 的节点
+jp_s: &jp_s {filter: '(?i)^(?=.*(?:🇯🇵|日本|\bJP\b|\bJPN\b|Japan|Tokyo|Osaka))(?!.*(?:^|[^0-9.])(?:1\.(?:0*[1-9]\d*)|[2-9]\d*(?:\.\d+)?|\d{2,}(?:\.\d+)?)(?:\s*)(?:[xX×]|倍|倍率)\b)(?!.*(?:^|[^0-9.])(?:1\.(?:0*[1-9]\d*)|[2-9]\d*\.\d+|[1-9]\d+\.\d+)\s*$).*$'}
+# 该锚点为: 筛选新加坡节点中 小于等于1倍率 的节点
+sg_s: &sg_s {filter: '(?i)^(?=.*(?:🇸🇬|新加坡|\bSG\b|\bSGP\b|Singapore))(?!.*(?:^|[^0-9.])(?:1\.(?:0*[1-9]\d*)|[2-9]\d*(?:\.\d+)?|\d{2,}(?:\.\d+)?)(?:\s*)(?:[xX×]|倍|倍率)\b)(?!.*(?:^|[^0-9.])(?:1\.(?:0*[1-9]\d*)|[2-9]\d*\.\d+|[1-9]\d+\.\d+)\s*$).*$'}
+# 该锚点为: 筛选美国节点中 小于等于1倍率 的节点
+us_s: &us_s {filter: '(?i)^(?=.*(?:🇺🇸|美国|美國|\bUS\b|\bUSA\b|United\s*States|America))(?!.*(?:^|[^0-9.])(?:1\.(?:0*[1-9]\d*)|[2-9]\d*(?:\.\d+)?|\d{2,}(?:\.\d+)?)(?:\s*)(?:[xX×]|倍|倍率)\b)(?!.*(?:^|[^0-9.])(?:1\.(?:0*[1-9]\d*)|[2-9]\d*\.\d+|[1-9]\d+\.\d+)\s*$).*$'}
+# 该锚点为: 筛选 大于1倍率 的高倍率节点
+high_rate: &high_rate {filter: '(?i)^(?=.*(?:^|[^0-9.])(?:1\.(?:0*[1-9]\d*)|[2-9]\d*(?:\.\d+)?|\d{2,}(?:\.\d+)?)(?:\s*)(?:[xX×]|倍|倍率)\b|(?:^|[^0-9.])(?:1\.(?:0*[1-9]\d*)|[2-9]\d*\.\d+|[1-9]\d+\.\d+)\s*$).*$'}
+# 该锚点为: 排除关键关键词的节点
+ef: &ef {exclude-filter: "(?i)建议|过滤|剩余|流量|重置|距离|套餐|官网|网址|到期|direct|Traffic|Expire|Reset"}
+proxy-groups:
+  - { name: 默认选择, type: select, proxies: [香港节点,台湾节点,日本节点,新加坡节点,美国节点,高倍率,直连], include-all: true, <<: *ef }
+  - { name: 香港节点, type: select, proxies: [香港最快,香港故转], include-all: true,  <<: [*hk_s, *ef] }
+  - { name: 台湾节点, type: select, proxies: [台湾最快,台湾故转], include-all: true, <<: [*tw_s, *ef] }
+  - { name: 日本节点, type: select, proxies: [日本最快,日本故转], include-all: true, <<: [*jp_s, *ef] }
+  - { name: 新加坡节点, type: select, proxies: [新加坡最快,新加坡故转], include-all: true, <<: [*sg_s, *ef] }
+  - { name: 美国节点, type: select, proxies: [美国最快,美国故转], include-all: true, <<: [*us_s, *ef] }
+  - { name: 高倍率, type: select, include-all: true, <<: [*high_rate, *ef] }
+  - { name: Emby, type: select, proxies: [直连,默认选择,香港节点,台湾节点,日本节点,新加坡节点,美国节点], include-all: true, <<: *ef }
+  - { name: PT, type: select, proxies: [直连,默认选择,香港节点,台湾节点,日本节点,新加坡节点,美国节点], include-all: true, <<: *ef }
+  - { name: GitHub, type: select, proxies: [香港节点,默认选择,直连,台湾节点,日本节点,新加坡节点,美国节点], include-all: true, <<: *ef }
+  - { name: AI服务, type: select, proxies: [美国节点,默认选择,直连,香港节点,台湾节点,日本节点,新加坡节点], include-all: true, <<: *ef }
+  - { name: 教育学术, type: select, proxies: [美国节点,默认选择,直连,香港节点,台湾节点,日本节点,新加坡节点], include-all: true, <<: *ef }
+  - { name: 电报, type: select, proxies: [新加坡节点,默认选择,直连,香港节点,台湾节点,日本节点,美国节点], include-all: true, <<: *ef }
+  - { name: 社交媒体, type: select, proxies: [美国节点,默认选择,直连,香港节点,台湾节点,日本节点,新加坡节点], include-all: true, <<: *ef }
+  - { name: 亚洲流媒体, type: select, proxies: [台湾节点,默认选择,直连,香港节点,日本节点,新加坡节点,美国节点], include-all: true, <<: *ef }
+  - { name: 全球流媒体, type: select, proxies: [美国节点,默认选择,直连,香港节点,台湾节点,日本节点,新加坡节点], include-all: true, <<: *ef }
+  - { name: 大陆流媒体, type: select, proxies: [直连,默认选择,香港节点,台湾节点,日本节点,新加坡节点,美国节点], include-all: true, <<: *ef }
+  - { name: 加密货币, type: select, proxies: [美国节点,默认选择,直连,香港节点,台湾节点,日本节点,新加坡节点], include-all: true, <<: *ef }
+  - { name: 测速, type: select, proxies: [默认选择,直连,香港节点,台湾节点,日本节点,新加坡节点,美国节点], include-all: true, <<: *ef }
+  - { name: 游戏, type: select, proxies: [香港节点,默认选择,直连,台湾节点,日本节点,新加坡节点,美国节点], include-all: true, <<: *ef }
+  - { name: 金融, type: select, proxies: [香港节点,默认选择,直连,台湾节点,日本节点,新加坡节点,美国节点], include-all: true, <<: *ef }
+  - { name: 云服务, type: select, proxies: [香港节点,默认选择,直连,台湾节点,日本节点,新加坡节点,美国节点], include-all: true, <<: *ef }
+  - { name: 谷歌, type: select, proxies: [美国节点,默认选择,直连,香港节点,台湾节点,日本节点,新加坡节点], include-all: true, <<: *ef }
+  - { name: 微软, type: select, proxies: [直连,默认选择,香港节点,台湾节点,日本节点,新加坡节点,美国节点], include-all: true, <<: *ef }
+  - { name: 苹果, type: select, proxies: [直连,默认选择,香港节点,台湾节点,日本节点,新加坡节点,美国节点], include-all: true, <<: *ef }
+  - { name: 飞跃长城, type: select, proxies: [默认选择,直连,香港节点,台湾节点,日本节点,新加坡节点,美国节点], include-all: true, <<: *ef }
+  # 这5个最快去除了高倍率节点
+  - { name: 香港最快, type: url-test, include-all: true, url: 'https://www.gstatic.com/generate_204', tolerance: 20, interval: 300, <<: [*hk_s, *ef] }
+  - { name: 台湾最快, type: url-test, include-all: true, url: 'https://www.gstatic.com/generate_204', tolerance: 20, interval: 300, <<: [*tw_s, *ef] }
+  - { name: 新加坡最快, type: url-test, include-all: true, url: 'https://www.gstatic.com/generate_204', tolerance: 20, interval: 300, <<: [*sg_s, *ef] }
+  - { name: 日本最快, type: url-test, include-all: true, url: 'https://www.gstatic.com/generate_204', tolerance: 20, interval: 300, <<: [*jp_s, *ef] }
+  - { name: 美国最快, type: url-test, include-all: true, url: 'https://www.gstatic.com/generate_204', tolerance: 20, interval: 300, <<: [*us_s, *ef] }
+  # 故障转移没有去除高倍率
+  - { name: 香港故转, type: fallback, include-all: true, url: 'https://www.gstatic.com/generate_204', tolerance: 20, interval: 300, filter: ".*香港.*", <<: *ef }
+  - { name: 台湾故转, type: fallback, include-all: true, url: 'https://www.gstatic.com/generate_204', tolerance: 20, interval: 300, filter: ".*台湾.*", <<: *ef }
+  - { name: 日本故转, type: fallback, include-all: true, url: 'https://www.gstatic.com/generate_204', tolerance: 20, interval: 300, filter: ".*日本.*", <<: *ef }
+  - { name: 新加坡故转, type: fallback, include-all: true, url: 'https://www.gstatic.com/generate_204', tolerance: 20, interval: 300, filter: ".*新加坡.*", <<: *ef }
+  - { name: 美国故转, type: fallback, include-all: true, url: 'https://www.gstatic.com/generate_204', tolerance: 20, interval: 300, filter: ".*美国.*", <<: *ef }
+  - { name: 直连, type: select, proxies: [DIRECT] }
+  - { name: 去广告, type: select, proxies: [REJECT, DIRECT] }
+# =========================
+# 端口监听配置（可选）
+# =========================
+# listeners:
+#   - {name: mixed0, type: mixed, port: 42000, proxy: 日本谷歌云}
+#   - {name: mixed1, type: mixed, port: 42001, proxy: 美国家宽}
+
+# =========================
+# 基础配置
+# =========================
+mixed-port: 7897
+allow-lan: true
+mode: rule
+log-level: info
+unified-delay: true
+tcp-concurrent: true
+find-process-mode: strict
+global-client-fingerprint: chrome
+
+# =========================
+# DNS配置
+# =========================
+dns:
+  enable: true
+  listen: "127.0.0.1:5335"
+  use-system-hosts: false
+  ipv6: false
+  cache-algorithm: arc
+  enhanced-mode: fake-ip
+  prefer-h3: false
+  respect-rules: true
+  fake-ip-range: 198.18.0.1/16
+  default-nameserver: [tls://223.5.5.5, tls://223.6.6.6]
+  proxy-server-nameserver:
+    - https://doh.pub/dns-query
+    - https://dns.alidns.com/dns-query
+  direct-nameserver: 
+    - https://doh.pub/dns-query
+    - https://dns.alidns.com/dns-query
+  nameserver:
+    - https://doh.pub/dns-query
+    - https://dns.alidns.com/dns-query
+  fallback:
+    - tls://1.1.1.1
+    - tls://8.8.4.4
+    - https://cloudflare-dns.com/dns-query
+    - https://dns.google/dns-query
+  fallback-filter: 
+    geoip: true
+    ipcidr: [240.0.0.0/4, 0.0.0.0/32, 127.0.0.1/8]
+    domain: [+.google.com, +.facebook.com, +.twitter.com, +.youtube.com, +.xn--ngstr-lra8j.com, +.google.cn, +.googleapis.cn, +.googleapis.com, +.gvt1.com]
+  fake-ip-filter: ["*.lan", "+.local", "+.home.arpa", "stun.*.*.*", "stun.*.*", time.windows.com, time.nist.gov, time.apple.com, time.asia.apple.com, "*.ntp.org.cn", "*.openwrt.pool.ntp.org", time1.cloud.tencent.com, time.ustc.edu.cn, pool.ntp.org, ntp.ubuntu.com, ntp.aliyun.com, ntp1.aliyun.com, ntp2.aliyun.com, ntp3.aliyun.com, ntp4.aliyun.com, ntp5.aliyun.com, ntp6.aliyun.com, ntp7.aliyun.com, time1.aliyun.com, time2.aliyun.com, time3.aliyun.com, time4.aliyun.com, time5.aliyun.com, time6.aliyun.com, time7.aliyun.com, "*.time.edu.cn", time1.apple.com, time2.apple.com, time3.apple.com, time4.apple.com, time5.apple.com, time6.apple.com, time7.apple.com, time1.google.com, time2.google.com, time3.google.com, time4.google.com, music.163.com, "*.music.163.com", "*.126.net", musicapi.taihe.com, music.taihe.com, songsearch.kugou.com, trackercdn.kugou.com, "*.kuwo.cn", api-jooxtt.sanook.com, api.joox.com, joox.com, y.qq.com, "*.y.qq.com", streamoc.music.tc.qq.com, mobileoc.music.tc.qq.com, isure.stream.qqmusic.qq.com, dl.stream.qqmusic.qq.com, aqqmusic.tc.qq.com, amobile.music.tc.qq.com, "*.xiami.com", "*.music.migu.cn", music.migu.cn, "*.msftconnecttest.com", "*.msftncsi.com", localhost.ptlogin2.qq.com, "*.*.*.srv.nintendo.net", "*.*.stun.playstation.net", "xbox.*.*.microsoft.com", "*.ipv6.microsoft.com", "*.*.xboxlive.com", speedtest.cros.wr.pvp.net]
+
+# =========================
+# 配置文件管理
+# =========================
+profile:
+  store-selected: true
+  store-fake-ip: false
+
+# =========================
+# 域名/流量嗅探
+# =========================
+sniffer:
+  enable: true
+  parse-pure-ip: true
+  sniff:
+    TLS: {ports: [443, 8443], override-destination: true}
+    HTTP: {ports: [80, 8080, 8000, 8880, 8888], override-destination: true}
+
+# =========================
+# Geo 数据获取
+# =========================
+geodata-mode: true
+geo-auto-update: true
+geodata-loader: standard
+geo-update-interval: 24
+geox-url:
+  geoip: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.dat
+  geosite: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geosite.dat
+  mmdb: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/country.mmdb
+  asn: https://github.com/xishang0128/geoip/releases/download/latest/GeoLite2-ASN.mmdb
+
+# =========================
+# 规则集获取
+# =========================
+rule-providers:
+  # 私有网络
+  private: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/private.mrs", path: ./rules/private.mrs, interval: 86400}
+  privateIP: {type: http, format: mrs, behavior: ipcidr, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geoip/private.mrs", path: ./rules/privateIP.mrs, interval: 86400}
+  # 去广告
+  category-ads-all: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/category-ads-all.mrs", path: ./rules/category-ads-all.mrs, interval: 86400}
+  # 自定义走国外
+  go_global: {type: http, format: yaml, behavior: classical, url: "https://raw.githubusercontent.com/imshonechen/CustomRules/main/forClash/ruleList/go_global.yaml", path: ./rules/go_global.yaml, interval: 86400}
+  # 自定义走国内
+  go_cn: {type: http, format: yaml, behavior: classical, url: "https://raw.githubusercontent.com/imshonechen/CustomRules/main/forClash/ruleList/go_cn.yaml", path: ./rules/go_cn.yaml, interval: 86400}
+  # EMBY
+  emby_service: {type: http, format: yaml, behavior: domain, url: "https://raw.githubusercontent.com/imshonechen/CustomRules/main/forClash/ruleList/emby_service.yaml", path: ./rules/emby_service.yaml, interval: 86400}
+  loser: {type: http, format: text, behavior: domain, url: "https://raw.githubusercontent.com/zxcll/sub/refs/heads/main/loser.list", path: ./rules/loser.yaml, interval: 86400}
+  category-emby: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/category-emby.mrs", path: ./rules/category-emby.mrs, interval: 86400}
+  # PT
+  pt_service: {type: http, format: yaml, behavior: classical, url: "https://raw.githubusercontent.com/imshonechen/CustomRules/main/forClash/ruleList/pt_service.yaml", path: ./rules/pt_service.yaml, interval: 86400}
+  # GitHub
+  github: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/github.mrs", path: ./rules/github.mrs, interval: 86400}
+  gitlab: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/gitlab.mrs", path: ./rules/gitlab.mrs, interval: 86400}
+  # AI服务
+  category-ai-chat-!cn: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/category-ai-chat-!cn.mrs", path: ./rules/category-ai-chat-!cn.mrs, interval: 86400}
+  # 教育学术
+  coursera: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/coursera.mrs", path: ./rules/coursera.mrs, interval: 86400}
+  edx: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/edx.mrs", path: ./rules/edx.mrs, interval: 86400}
+  udemy: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/udemy.mrs", path: ./rules/udemy.mrs, interval: 86400}
+  khanacademy: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/khanacademy.mrs", path: ./rules/khanacademy.mrs, interval: 86400}
+  category-scholar-!cn: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/category-scholar-!cn.mrs", path: ./rules/category-scholar-!cn.mrs, interval: 86400}
+  # 电报
+  telegram: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/telegram.mrs", path: ./rules/telegram.mrs, interval: 86400}
+  telegramIP: {type: http, format: mrs, behavior: ipcidr, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geoip/telegram.mrs", path: ./rules/telegramIP.mrs, interval: 86400}
+  # 社交媒体
+  facebook: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/facebook.mrs", path: ./rules/facebook.mrs, interval: 86400}
+  instagram: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/instagram.mrs", path: ./rules/instagram.mrs, interval: 86400}
+  twitter: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/twitter.mrs", path: ./rules/twitter.mrs, interval: 86400}
+  x: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/x.mrs", path: ./rules/x.mrs, interval: 86400} 
+  tiktok: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/tiktok.mrs", path: ./rules/tiktok.mrs, interval: 86400}
+  linkedin: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/linkedin.mrs", path: ./rules/linkedin.mrs, interval: 86400}
+  discord: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/discord.mrs", path: ./rules/discord.mrs, interval: 86400}
+  threads: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/threads.mrs", path: ./rules/threads.mrs, interval: 86400}
+  # 亚洲流媒体
+  WeTV_No_Resolve: {type: http, format: yaml, behavior: classical, url: "https://github.com/blackmatrix7/ios_rule_script/raw/refs/heads/master/rule/Clash/WeTV/WeTV_No_Resolve.yaml", path: ./rules/WeTV_No_Resolve.yaml, interval: 86400}
+  abema: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/abema.mrs", path: ./rules/abema.mrs, interval: 86400}
+  bahamut: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/bahamut.mrs", path: ./rules/bahamut.mrs, interval: 86400}
+  dmm: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/dmm.mrs", path: ./rules/dmm.mrs, interval: 86400}
+  HuluJP_No_Resolve: {type: http, format: yaml, behavior: classical, url: "https://github.com/blackmatrix7/ios_rule_script/raw/refs/heads/master/rule/Clash/HuluJP/HuluJP_No_Resolve.yaml", path: ./rules/HuluJP_No_Resolve.yaml, interval: 86400}
+  iqiyi@!cn: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/iqiyi@!cn.mrs", path: ./rules/iqiyi@!cn.mrs, interval: 86400}
+  japonx: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/japonx.mrs", path: ./rules/japonx.mrs, interval: 86400}
+  JOOX_No_Resolve: {type: http, format: yaml, behavior: classical, url: "https://github.com/blackmatrix7/ios_rule_script/raw/refs/heads/master/rule/Clash/JOOX/JOOX_No_Resolve.yaml", path: ./rules/JOOX_No_Resolve.yaml, interval: 86400}
+  kkbox: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/kkbox.mrs", path: ./rules/kkbox.mrs, interval: 86400}
+  kktv: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/kktv.mrs", path: ./rules/kktv.mrs, interval: 86400}
+  LineTV_No_Resolve: {type: http, format: yaml, behavior: classical, url: "https://github.com/blackmatrix7/ios_rule_script/raw/refs/heads/master/rule/Clash/LineTV/LineTV_No_Resolve.yaml", path: ./rules/LineTV_No_Resolve.yaml, interval: 86400}
+  mytvsuper: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/mytvsuper.mrs", path: ./rules/mytvsuper.mrs, interval: 86400}
+  niconico: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/niconico.mrs", path: ./rules/niconico.mrs, interval: 86400}
+  viu: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/viu.mrs", path: ./rules/viu.mrs, interval: 86400}
+  bilibili@!cn: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/bilibili@!cn.mrs", path: ./rules/bilibili@!cn.mrs, interval: 86400}
+  # 全球流媒体
+  youtube: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/youtube.mrs", path: ./rules/youtube.mrs, interval: 86400}
+  netflix: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/netflix.mrs", path: ./rules/netflix.mrs, interval: 86400}
+  disney: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/disney.mrs", path: ./rules/disney.mrs, interval: 86400}
+  hbo: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/hbo.mrs", path: ./rules/hbo.mrs, interval: 86400}
+  hulu: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/hulu.mrs", path: ./rules/hulu.mrs, interval: 86400}
+  spotify: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/spotify.mrs", path: ./rules/spotify.mrs, interval: 86400}
+  apple-tvplus: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/apple-tvplus.mrs", path: ./rules/apple-tvplus.mrs, interval: 86400}
+  abc: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/abc.mrs", path: ./rules/abc.mrs, interval: 86400}
+  primevideo: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/primevideo.mrs", path: ./rules/primevideo.mrs, interval: 86400}
+  bbc: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/bbc.mrs", path: ./rules/bbc.mrs, interval: 86400}
+  dazn: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/dazn.mrs", path: ./rules/dazn.mrs, interval: 86400}
+  discoveryplus: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/discoveryplus.mrs", path: ./rules/discoveryplus.mrs, interval: 86400}
+  fox: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/fox.mrs", path: ./rules/fox.mrs, interval: 86400}
+  pbs: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/pbs.mrs", path: ./rules/pbs.mrs, interval: 86400}
+  pornhub: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/pornhub.mrs", path: ./rules/pornhub.mrs, interval: 86400}
+  soundcloud: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/soundcloud.mrs", path: ./rules/soundcloud.mrs, interval: 86400}
+  # 大陆流媒体
+  bilibili: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/bilibili.mrs", path: ./rules/bilibili.mrs, interval: 86400}
+  iqiyi: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/iqiyi.mrs", path: ./rules/iqiyi.mrs, interval: 86400}
+  youku: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/youku.mrs", path: ./rules/youku.mrs, interval: 86400}
+  TencentVideo_No_Resolve: {type: http, format: yaml, behavior: classical, url: "https://github.com/blackmatrix7/ios_rule_script/raw/refs/heads/master/rule/Clash/TencentVideo/TencentVideo_No_Resolve.yaml", path: ./rules/TencentVideo_No_Resolve.yaml, interval: 86400}
+  # 加密货币
+  category-cryptocurrency: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/category-cryptocurrency.mrs", path: ./rules/category-cryptocurrency.mrs, interval: 86400}
+  # 测速
+  category-speedtest: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/category-speedtest.mrs", path: ./rules/category-speedtest.mrs, interval: 86400}
+  # 游戏平台
+  category-game-platforms-download@cn: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/category-game-platforms-download@cn.mrs", path: ./rules/category-game-platforms-download@cn.mrs, interval: 86400}
+  steam: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/steam.mrs", path: ./rules/steam.mrs, interval: 86400}
+  epicgames: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/epicgames.mrs", path: ./rules/epicgames.mrs, interval: 86400}
+  ea: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/ea.mrs", path: ./rules/ea.mrs, interval: 86400}
+  ubisoft: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/ubisoft.mrs", path: ./rules/ubisoft.mrs, interval: 86400}
+  blizzard: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/blizzard.mrs", path: ./rules/blizzard.mrs, interval: 86400}
+  # 金融
+  paypal: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/paypal.mrs", path: ./rules/paypal.mrs, interval: 86400}
+  visa: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/visa.mrs", path: ./rules/visa.mrs, interval: 86400}
+  mastercard: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/mastercard.mrs", path: ./rules/mastercard.mrs, interval: 86400}
+  stripe: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/stripe.mrs", path: ./rules/stripe.mrs, interval: 86400}
+  wise: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/wise.mrs", path: ./rules/wise.mrs, interval: 86400}
+  # 云服务
+  aws: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/aws.mrs", path: ./rules/aws.mrs, interval: 86400}
+  azure: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/azure.mrs", path: ./rules/azure.mrs, interval: 86400}
+  digitalocean: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/digitalocean.mrs", path: ./rules/digitalocean.mrs, interval: 86400}
+  heroku: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/heroku.mrs", path: ./rules/heroku.mrs, interval: 86400}
+  dropbox: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/dropbox.mrs", path: ./rules/dropbox.mrs, interval: 86400}
+  # 谷歌
+  googlefcm: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/googlefcm.mrs", path: ./rules/googlefcm.mrs, interval: 86400}
+  google: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/google.mrs", path: ./rules/google.mrs, interval: 86400}
+  # 微软
+  microsoft: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/microsoft.mrs", path: ./rules/microsoft.mrs, interval: 86400}
+  # 苹果
+  applemusic: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo-lite/geosite/applemusic.mrs", path: ./rules/applemusic.mrs, interval: 86400}
+  apple: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/apple.mrs", path: ./rules/apple.mrs, interval: 86400}
+  # 国外
+  geolocation-!cn: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/geolocation-!cn.mrs", path: ./rules/geolocation-!cn.mrs, interval: 86400}
+  # 国内
+  geolocation-cn: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/geolocation-cn.mrs", path: ./rules/geolocation-cn.mrs, interval: 86400}
+  cn: {type: http, format: mrs, behavior: ipcidr, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geoip/cn.mrs", path: ./rules/cn.mrs, interval: 86400}
+
+# =========================
+# 分流规则
+# =========================
+# 注意：分流规则按自上而下、首次命中即停的原则匹配
+
+rules:
+  #####################################
+  # 拦 QUIC：UDP/443
+  - AND,((NETWORK,UDP),(DST-PORT,443)),REJECT
+  #####################################
+  # 端口白名单：特殊端口
+  # - NOT,((DST-PORT,21/22/23/53/80/123/143/194/443/465/587/853/993/995/998/2052-2053/2082-2083/2086/2095-2096/3389/5222/5228-5230/8080/8443/8880/8888-8889)),DIRECT
+  # 私网/LAN
+  - RULE-SET,private,直连
+  - RULE-SET,privateIP,直连,no-resolve
+  #####################################
+  # 广告拦截
+  - RULE-SET,category-ads-all,去广告
+  #####################################
+  # 自定义强制直连或代理
+  - RULE-SET,go_cn,直连,no-resolve
+  - RULE-SET,go_global,默认选择,no-resolve
+  #####################################
+  # Emby相关
+  - RULE-SET,emby_service,Emby,no-resolve
+  - RULE-SET,loser,Emby,no-resolve
+  - RULE-SET,category-emby,Emby,no-resolve
+  #####################################
+  # PT相关
+  - RULE-SET,pt_service,PT,no-resolve
+  - PROCESS-NAME,qbittorrent,直连
+  - PROCESS-NAME,qbittorrent.exe,直连
+  - PROCESS-NAME,qbittorrent-nox,直连
+  - PROCESS-NAME,uTorrent,直连
+  - PROCESS-NAME,uTorrent.exe,直连
+  - PROCESS-NAME,bittorrent,直连
+  - PROCESS-NAME,bittorrent.exe,直连
+  - PROCESS-NAME,Transmission,直连
+  - PROCESS-NAME,Transmission.exe,直连
+  - PROCESS-NAME,transmission-qt,直连
+  - PROCESS-NAME,transmission-qt.exe,直连
+  - PROCESS-NAME,transmission-daemon,直连
+  - PROCESS-NAME,transmission-gtk,直连
+  - PROCESS-NAME,transmission-cli,直连
+  - PROCESS-NAME,deluge,直连
+  - PROCESS-NAME,deluge.exe,直连
+  - PROCESS-NAME,deluged,直连
+  - PROCESS-NAME,deluge-web,直连
+  - PROCESS-NAME,BitComet,直连
+  - PROCESS-NAME,BitComet.exe,直连
+  - PROCESS-NAME,BitComet_x64.exe,直连
+  - PROCESS-NAME,rtorrent,直连
+  - PROCESS-NAME,Thunder,直连
+  - PROCESS-NAME,Thunder.exe,直连
+  
+  #####################################
+  # GitHub
+  - RULE-SET,github,GitHub
+  - RULE-SET,gitlab,GitHub
+  # AI服务
+  - RULE-SET,category-ai-chat-!cn,AI服务
+  # 教育学术
+  - RULE-SET,coursera,教育学术
+  - RULE-SET,edx,教育学术
+  - RULE-SET,udemy,教育学术
+  - RULE-SET,khanacademy,教育学术
+  - RULE-SET,category-scholar-!cn,教育学术
+  #####################################
+  # 电报
+  - RULE-SET,telegram,电报
+  - RULE-SET,telegramIP,电报,no-resolve
+  #####################################
+  # 社交媒体
+  - RULE-SET,facebook,社交媒体
+  - RULE-SET,instagram,社交媒体
+  - RULE-SET,twitter,社交媒体
+  - RULE-SET,x,社交媒体
+  - RULE-SET,tiktok,社交媒体
+  - RULE-SET,linkedin,社交媒体
+  - RULE-SET,discord,社交媒体
+  - RULE-SET,threads,社交媒体
+  #####################################
+  # 亚洲流媒体
+  - RULE-SET,WeTV_No_Resolve,亚洲流媒体
+  - RULE-SET,abema,亚洲流媒体
+  - RULE-SET,bahamut,亚洲流媒体
+  - RULE-SET,dmm,亚洲流媒体
+  - RULE-SET,HuluJP_No_Resolve,亚洲流媒体
+  - RULE-SET,iqiyi@!cn,亚洲流媒体
+  - RULE-SET,japonx,亚洲流媒体
+  - RULE-SET,JOOX_No_Resolve,亚洲流媒体
+  - RULE-SET,kkbox,亚洲流媒体
+  - RULE-SET,kktv,亚洲流媒体
+  - RULE-SET,LineTV_No_Resolve,亚洲流媒体
+  - RULE-SET,mytvsuper,亚洲流媒体
+  - RULE-SET,niconico,亚洲流媒体
+  - RULE-SET,viu,亚洲流媒体
+  - RULE-SET,bilibili@!cn,亚洲流媒体
+  #####################################
+  # 全球流媒体
+  - RULE-SET,youtube,全球流媒体
+  - RULE-SET,netflix,全球流媒体
+  - RULE-SET,disney,全球流媒体
+  - RULE-SET,hbo,全球流媒体
+  - RULE-SET,hulu,全球流媒体
+  - RULE-SET,spotify,全球流媒体
+  - RULE-SET,apple-tvplus,全球流媒体
+  - RULE-SET,abc,全球流媒体
+  - RULE-SET,primevideo,全球流媒体
+  - RULE-SET,bbc,全球流媒体
+  - RULE-SET,dazn,全球流媒体
+  - RULE-SET,discoveryplus,全球流媒体
+  - RULE-SET,fox,全球流媒体
+  - RULE-SET,pbs,全球流媒体
+  - RULE-SET,pornhub,全球流媒体
+  - RULE-SET,soundcloud,全球流媒体
+  #####################################
+  # 大陆流媒体
+  - RULE-SET,bilibili,大陆流媒体
+  - RULE-SET,iqiyi,大陆流媒体
+  - RULE-SET,youku,大陆流媒体
+  - RULE-SET,TencentVideo_No_Resolve,大陆流媒体
+  #####################################
+  # 加密货币
+  - RULE-SET,category-cryptocurrency,加密货币
+  #####################################
+  # 测速
+  - RULE-SET,category-speedtest,测速
+  #####################################
+  # 游戏平台
+  - RULE-SET,category-game-platforms-download@cn,直连
+  - RULE-SET,steam,游戏
+  - RULE-SET,epicgames,游戏
+  - RULE-SET,ea,游戏
+  - RULE-SET,ubisoft,游戏
+  - RULE-SET,blizzard,游戏
+  #####################################
+  # 金融
+  - RULE-SET,paypal,金融
+  - RULE-SET,visa,金融
+  - RULE-SET,mastercard,金融
+  - RULE-SET,stripe,金融
+  - RULE-SET,wise,金融
+  #####################################
+  # 云服务
+  - RULE-SET,aws,云服务
+  - RULE-SET,azure,云服务
+  - RULE-SET,digitalocean,云服务
+  - RULE-SET,heroku,云服务
+  - RULE-SET,dropbox,云服务
+  #####################################
+  # 御三家
+  - RULE-SET,googlefcm,谷歌
+  - RULE-SET,google,谷歌
+  - RULE-SET,microsoft,微软
+  - RULE-SET,applemusic,苹果
+  - RULE-SET,apple,苹果
+  #####################################
+  # 国内站
+  - RULE-SET,geolocation-cn,直连
+  #####################################
+  # 国外站
+  - RULE-SET,geolocation-!cn,飞跃长城
+  #####################################
+  # 国内兜底-国内IP
+  - GEOIP,cn,直连,no-resolve
+  # 兜底出海
+  - MATCH,飞跃长城
