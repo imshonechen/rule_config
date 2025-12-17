@@ -13,11 +13,11 @@ proxies:
 # =========================
 # 把 url 替换成你的 Clash 订阅链接，不用的订阅保持不变即可
 proxy-providers:
-  订阅1: {type: http, url: "https://ryanvanson.github.io/emptyyaml/empty.yaml", path: ./providers/sub1.yaml, interval: 3600, health-check: {enable: true, url: "https://www.gstatic.com/generate_204", interval: 300, lazy: true}, override: {additional-prefix: 'ᴬ'}}
-  订阅2: {type: http, url: "https://ryanvanson.github.io/emptyyaml/empty.yaml", path: ./providers/sub2.yaml, interval: 3600, health-check: {enable: true, url: "https://www.gstatic.com/generate_204", interval: 300, lazy: true}, override: {additional-prefix: 'ᴮ'}}
-  订阅3: {type: http, url: "https://ryanvanson.github.io/emptyyaml/empty.yaml", path: ./providers/sub3.yaml, interval: 3600, health-check: {enable: true, url: "https://www.gstatic.com/generate_204", interval: 300, lazy: true}, override: {additional-prefix: 'ᶜ'}}
-  订阅4: {type: http, url: "https://ryanvanson.github.io/emptyyaml/empty.yaml", path: ./providers/sub4.yaml, interval: 3600, health-check: {enable: true, url: "https://www.gstatic.com/generate_204", interval: 300, lazy: true}, override: {additional-prefix: 'ᴰ'}}
-  订阅5: {type: http, url: "https://ryanvanson.github.io/emptyyaml/empty.yaml", path: ./providers/sub5.yaml, interval: 3600, health-check: {enable: true, url: "https://www.gstatic.com/generate_204", interval: 300, lazy: true}, override: {additional-prefix: 'ᴱ'}}
+  订阅1: {type: http, url: "https://ryanvanson.github.io/emptyyaml/empty.yaml", path: ./providers/sub1.yaml, interval: 3600, health-check: {enable: true, url: "http://connectivitycheck.gstatic.com/generate_204", interval: 300, lazy: true}, override: {additional-prefix: 'ᴬ'}}
+  订阅2: {type: http, url: "https://ryanvanson.github.io/emptyyaml/empty.yaml", path: ./providers/sub2.yaml, interval: 3600, health-check: {enable: true, url: "http://connectivitycheck.gstatic.com/generate_204", interval: 300, lazy: true}, override: {additional-prefix: 'ᴮ'}}
+  订阅3: {type: http, url: "https://ryanvanson.github.io/emptyyaml/empty.yaml", path: ./providers/sub3.yaml, interval: 3600, health-check: {enable: true, url: "http://connectivitycheck.gstatic.com/generate_204", interval: 300, lazy: true}, override: {additional-prefix: 'ᶜ'}}
+  订阅4: {type: http, url: "https://ryanvanson.github.io/emptyyaml/empty.yaml", path: ./providers/sub4.yaml, interval: 3600, health-check: {enable: true, url: "http://connectivitycheck.gstatic.com/generate_204", interval: 300, lazy: true}, override: {additional-prefix: 'ᴰ'}}
+  订阅5: {type: http, url: "https://ryanvanson.github.io/emptyyaml/empty.yaml", path: ./providers/sub5.yaml, interval: 3600, health-check: {enable: true, url: "http://connectivitycheck.gstatic.com/generate_204", interval: 300, lazy: true}, override: {additional-prefix: 'ᴱ'}}
 
 # =========================
 # 代理组配置
@@ -40,7 +40,7 @@ us_s: &us_s {filter: '(?i)^(?=.*(?:🇺🇸|美国|美國|\bUS\b|\bUSA\b|United\
 # 该锚点为: 筛选 大于1倍率 的高倍率节点
 high_rate: &high_rate {filter: '(?i)^(?=.*(?:^|[^0-9.])(?:1\.(?:0*[1-9]\d*)|[2-9]\d*(?:\.\d+)?|\d{2,}(?:\.\d+)?)(?:\s*)(?:[xX×]|倍|倍率)\b|(?:^|[^0-9.])(?:1\.(?:0*[1-9]\d*)|[2-9]\d*\.\d+|[1-9]\d+\.\d+)\s*$).*$'}
 # 该锚点为: 排除关键关键词的节点
-ef: &ef {exclude-filter: "(?i)建议|过滤|剩余|流量|重置|距离|套餐|官网|网址|到期|direct|Traffic|Expire|Reset"}
+ef: &ef {url: 'http://connectivitycheck.gstatic.com/generate_204', exclude-filter: "(?i)建议|过滤|剩余|流量|重置|距离|套餐|官网|网址|到期|direct|Traffic|Expire|Reset"}
 proxy-groups:
   - { name: 默认选择, type: select, proxies: [香港节点,台湾节点,日本节点,新加坡节点,美国节点,高倍率,直连], include-all: true, <<: *ef }
   - { name: 香港节点, type: select, proxies: [香港最快,香港故转], include-all: true,  <<: [*hk_s, *ef] }
@@ -69,17 +69,17 @@ proxy-groups:
   - { name: 苹果, type: select, proxies: [直连,默认选择,香港节点,台湾节点,日本节点,新加坡节点,美国节点], include-all: true, <<: *ef }
   - { name: 飞跃长城, type: select, proxies: [默认选择,直连,香港节点,台湾节点,日本节点,新加坡节点,美国节点], include-all: true, <<: *ef }
   # 这5个最快去除了高倍率节点
-  - { name: 香港最快, type: url-test, include-all: true, url: 'https://www.gstatic.com/generate_204', tolerance: 20, interval: 300, <<: [*hk_s, *ef] }
-  - { name: 台湾最快, type: url-test, include-all: true, url: 'https://www.gstatic.com/generate_204', tolerance: 20, interval: 300, <<: [*tw_s, *ef] }
-  - { name: 新加坡最快, type: url-test, include-all: true, url: 'https://www.gstatic.com/generate_204', tolerance: 20, interval: 300, <<: [*sg_s, *ef] }
-  - { name: 日本最快, type: url-test, include-all: true, url: 'https://www.gstatic.com/generate_204', tolerance: 20, interval: 300, <<: [*jp_s, *ef] }
-  - { name: 美国最快, type: url-test, include-all: true, url: 'https://www.gstatic.com/generate_204', tolerance: 20, interval: 300, <<: [*us_s, *ef] }
+  - { name: 香港最快, type: url-test, include-all: true, tolerance: 20, interval: 300, <<: [*hk_s, *ef] }
+  - { name: 台湾最快, type: url-test, include-all: true, tolerance: 20, interval: 300, <<: [*tw_s, *ef] }
+  - { name: 新加坡最快, type: url-test, include-all: true, tolerance: 20, interval: 300, <<: [*sg_s, *ef] }
+  - { name: 日本最快, type: url-test, include-all: true, tolerance: 20, interval: 300, <<: [*jp_s, *ef] }
+  - { name: 美国最快, type: url-test, include-all: true, tolerance: 20, interval: 300, <<: [*us_s, *ef] }
   # 故障转移没有去除高倍率
-  - { name: 香港故转, type: fallback, include-all: true, url: 'https://www.gstatic.com/generate_204', tolerance: 20, interval: 300, filter: ".*香港.*", <<: *ef }
-  - { name: 台湾故转, type: fallback, include-all: true, url: 'https://www.gstatic.com/generate_204', tolerance: 20, interval: 300, filter: ".*台湾.*", <<: *ef }
-  - { name: 日本故转, type: fallback, include-all: true, url: 'https://www.gstatic.com/generate_204', tolerance: 20, interval: 300, filter: ".*日本.*", <<: *ef }
-  - { name: 新加坡故转, type: fallback, include-all: true, url: 'https://www.gstatic.com/generate_204', tolerance: 20, interval: 300, filter: ".*新加坡.*", <<: *ef }
-  - { name: 美国故转, type: fallback, include-all: true, url: 'https://www.gstatic.com/generate_204', tolerance: 20, interval: 300, filter: ".*美国.*", <<: *ef }
+  - { name: 香港故转, type: fallback, include-all: true, tolerance: 20, interval: 300, filter: ".*香港.*", <<: *ef }
+  - { name: 台湾故转, type: fallback, include-all: true, tolerance: 20, interval: 300, filter: ".*台湾.*", <<: *ef }
+  - { name: 日本故转, type: fallback, include-all: true, tolerance: 20, interval: 300, filter: ".*日本.*", <<: *ef }
+  - { name: 新加坡故转, type: fallback, include-all: true, tolerance: 20, interval: 300, filter: ".*新加坡.*", <<: *ef }
+  - { name: 美国故转, type: fallback, include-all: true, tolerance: 20, interval: 300, filter: ".*美国.*", <<: *ef }
   - { name: 直连, type: select, proxies: [DIRECT] }
   - { name: 去广告, type: select, proxies: [REJECT, DIRECT] }
 # =========================
