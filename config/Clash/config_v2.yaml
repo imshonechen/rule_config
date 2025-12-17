@@ -71,8 +71,8 @@ proxy-groups:
   # 这5个最快去除了高倍率节点
   - { name: 香港最快, type: url-test, include-all: true, tolerance: 20, interval: 300, <<: [*hk_s, *ef] }
   - { name: 台湾最快, type: url-test, include-all: true, tolerance: 20, interval: 300, <<: [*tw_s, *ef] }
-  - { name: 新加坡最快, type: url-test, include-all: true, tolerance: 20, interval: 300, <<: [*sg_s, *ef] }
   - { name: 日本最快, type: url-test, include-all: true, tolerance: 20, interval: 300, <<: [*jp_s, *ef] }
+  - { name: 新加坡最快, type: url-test, include-all: true, tolerance: 20, interval: 300, <<: [*sg_s, *ef] }
   - { name: 美国最快, type: url-test, include-all: true, tolerance: 20, interval: 300, <<: [*us_s, *ef] }
   # 故障转移没有去除高倍率
   - { name: 香港故转, type: fallback, include-all: true, tolerance: 20, interval: 300, filter: '(?i)^(?=.*(?:🇭🇰|香港|HK|HKG|Hong\s*Kong|HongKong)).*$', <<: *ef }
