@@ -75,11 +75,11 @@ proxy-groups:
   - { name: 日本最快, type: url-test, include-all: true, tolerance: 20, interval: 300, <<: [*jp_s, *ef] }
   - { name: 美国最快, type: url-test, include-all: true, tolerance: 20, interval: 300, <<: [*us_s, *ef] }
   # 故障转移没有去除高倍率
-  - { name: 香港故转, type: fallback, include-all: true, tolerance: 20, interval: 300, filter: ".*香港.*", <<: *ef }
-  - { name: 台湾故转, type: fallback, include-all: true, tolerance: 20, interval: 300, filter: ".*台湾.*", <<: *ef }
-  - { name: 日本故转, type: fallback, include-all: true, tolerance: 20, interval: 300, filter: ".*日本.*", <<: *ef }
-  - { name: 新加坡故转, type: fallback, include-all: true, tolerance: 20, interval: 300, filter: ".*新加坡.*", <<: *ef }
-  - { name: 美国故转, type: fallback, include-all: true, tolerance: 20, interval: 300, filter: ".*美国.*", <<: *ef }
+  - { name: 香港故转, type: fallback, include-all: true, tolerance: 20, interval: 300, filter: '(?i)^(?=.*(?:🇭🇰|香港|HK|HKG|Hong\s*Kong|HongKong)).*$', <<: *ef }
+  - { name: 台湾故转, type: fallback, include-all: true, tolerance: 20, interval: 300, filter: '(?i)^(?=.*(?:🇹🇼|台湾|台灣|\bTW\b|\bTWN\b|Taiwan|Taipei)).*$', <<: *ef }
+  - { name: 日本故转, type: fallback, include-all: true, tolerance: 20, interval: 300, filter: '(?i)^(?=.*(?:🇯🇵|日本|\bJP\b|\bJPN\b|Japan|Tokyo|Osaka)).*$', <<: *ef }
+  - { name: 新加坡故转, type: fallback, include-all: true, tolerance: 20, interval: 300, filter: '(?i)^(?=.*(?:🇸🇬|新加坡|\bSG\b|\bSGP\b|Singapore)).*$', <<: *ef }
+  - { name: 美国故转, type: fallback, include-all: true, tolerance: 20, interval: 300, filter: '(?i)^(?=.*(?:🇺🇸|美国|美國|\bUS\b|\bUSA\b|United\s*States|America)).*$', <<: *ef }
   - { name: 直连, type: select, proxies: [DIRECT] }
   - { name: 去广告, type: select, proxies: [REJECT, DIRECT] }
 # =========================
