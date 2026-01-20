@@ -366,19 +366,19 @@ rules:
   #####################################
   # 亚洲流媒体
   - RULE-SET,WeTV_No_Resolve,亚洲流媒体
-  - RULE-SET,abema,亚洲流媒体
-  - RULE-SET,bahamut,亚洲流媒体
-  - RULE-SET,dmm,亚洲流媒体
-  - RULE-SET,HuluJP_No_Resolve,亚洲流媒体
+  - RULE-SET,abema,日本节点
+  - RULE-SET,bahamut,台湾节点
+  - RULE-SET,dmm,日本节点
+  - RULE-SET,HuluJP_No_Resolve,日本节点
   - RULE-SET,iqiyi@!cn,亚洲流媒体
-  - RULE-SET,japonx,亚洲流媒体
+  - RULE-SET,japonx,日本节点
   - RULE-SET,JOOX_No_Resolve,亚洲流媒体
-  - RULE-SET,kkbox,亚洲流媒体
-  - RULE-SET,kktv,亚洲流媒体
-  - RULE-SET,LineTV_No_Resolve,亚洲流媒体
-  - RULE-SET,mytvsuper,亚洲流媒体
-  - RULE-SET,niconico,亚洲流媒体
-  - RULE-SET,viu,亚洲流媒体
+  - RULE-SET,kkbox,台湾节点
+  - RULE-SET,kktv,台湾节点
+  - RULE-SET,LineTV_No_Resolve,台湾节点
+  - RULE-SET,mytvsuper,香港节点
+  - RULE-SET,niconico,日本节点
+  - RULE-SET,viu,香港节点
   - RULE-SET,bilibili@!cn,亚洲流媒体
   #####################################
   # 全球流媒体
