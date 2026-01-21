@@ -281,7 +281,10 @@ rule-providers:
   # 国内
   geolocation-cn: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/geolocation-cn.mrs", path: ./rules/geolocation-cn.mrs, interval: 86400}
   cn: {type: http, format: mrs, behavior: ipcidr, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geoip/cn.mrs", path: ./rules/cn.mrs, interval: 86400}
-
+  # 阿里云
+  aliyun: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/aliyun.mrs", path: ./rules/aliyun.mrs, interval: 86400}
+  alibabacloud: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/alibabacloud.mrs", path: ./rules/alibabacloud.mrs, interval: 86400}
+  
 # =========================
 # 分流规则
 # =========================
@@ -432,6 +435,9 @@ rules:
   - RULE-SET,digitalocean,云服务
   - RULE-SET,heroku,云服务
   - RULE-SET,dropbox,云服务
+  # 阿里云
+  - RULE-SET,aliyun,直连
+  - RULE-SET,alibabacloud,云服务
   #####################################
   # 御三家
   - RULE-SET,googlefcm,谷歌
@@ -446,6 +452,7 @@ rules:
   # 国外站
   - RULE-SET,geolocation-!cn,飞跃长城
   #####################################
+  
   # 国内兜底-国内IP
   - GEOIP,cn,直连,no-resolve
   # 兜底出海
