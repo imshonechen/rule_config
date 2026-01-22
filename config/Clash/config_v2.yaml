@@ -453,7 +453,8 @@ rules:
   - RULE-SET,geolocation-!cn,飞跃长城
   #####################################
   
-  # 国内兜底-国内IP
+  # 国内兜底
+  - GEOSITE,cn,直连
   - GEOIP,cn,直连,no-resolve
   # 兜底出海
   - MATCH,飞跃长城
