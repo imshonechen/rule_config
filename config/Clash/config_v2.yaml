@@ -48,6 +48,7 @@ proxy-groups:
   - { name: 日本节点, type: select, proxies: [日本最快,日本故转], include-all: true, <<: [*jp_s, *ef] }
   - { name: 新加坡节点, type: select, proxies: [新加坡最快,新加坡故转], include-all: true, <<: [*sg_s, *ef] }
   - { name: 美国节点, type: select, proxies: [美国最快,美国故转], include-all: true, <<: [*us_s, *ef] }
+  - { name: 链式前置, type: select, proxies: [直连],include-all-providers: true, <<: *ef }
   - { name: 高倍率, type: select, include-all: true, <<: [*high_rate, *ef] }
   - { name: Emby, type: select, proxies: [直连,默认选择,香港节点,台湾节点,日本节点,新加坡节点,美国节点], include-all: true, <<: *ef }
   - { name: PT, type: select, proxies: [直连,默认选择,香港节点,台湾节点,日本节点,新加坡节点,美国节点], include-all: true, <<: *ef }
@@ -56,6 +57,7 @@ proxy-groups:
   - { name: 教育学术, type: select, proxies: [美国节点,默认选择,直连,香港节点,台湾节点,日本节点,新加坡节点], include-all: true, <<: *ef }
   - { name: 电报, type: select, proxies: [新加坡节点,默认选择,直连,香港节点,台湾节点,日本节点,美国节点], include-all: true, <<: *ef }
   - { name: 社交媒体, type: select, proxies: [美国节点,默认选择,直连,香港节点,台湾节点,日本节点,新加坡节点], include-all: true, <<: *ef }
+  - { name: Spotify, type: select, proxies: [直连,香港故转,台湾故转,日本故转,新加坡故转,美国故转], include-all: true, <<: *ef }
   - { name: 亚洲流媒体, type: select, proxies: [台湾节点,默认选择,直连,香港节点,日本节点,新加坡节点,美国节点], include-all: true, <<: *ef }
   - { name: 全球流媒体, type: select, proxies: [美国节点,默认选择,直连,香港节点,台湾节点,日本节点,新加坡节点], include-all: true, <<: *ef }
   - { name: 大陆流媒体, type: select, proxies: [直连,默认选择,香港节点,台湾节点,日本节点,新加坡节点,美国节点], include-all: true, <<: *ef }
@@ -390,7 +392,7 @@ rules:
   - RULE-SET,disney,全球流媒体
   - RULE-SET,hbo,全球流媒体
   - RULE-SET,hulu,全球流媒体
-  - RULE-SET,spotify,全球流媒体
+  - RULE-SET,spotify,Spotify
   - RULE-SET,apple-tvplus,全球流媒体
   - RULE-SET,abc,全球流媒体
   - RULE-SET,primevideo,全球流媒体
