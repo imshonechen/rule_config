@@ -10,15 +10,10 @@ import yaml
 GITHUB_ROOT = os.getenv('GITHUB_ROOT', '')
 if GITHUB_ROOT:
     TEMPLATE_PATH = os.path.join(GITHUB_ROOT, "rule_config", "config", "Clash", "config_v2.yaml")
-    CUSTOM_PROXIES_PATH = os.path.join(GITHUB_ROOT, "rule_config", "config", "Clash", "custom_proxies.config")
 else:
     # 如果没有设置环境变量，使用脚本所在目录
     script_dir = os.path.dirname(os.path.abspath(__file__))
     TEMPLATE_PATH = os.path.join(script_dir, "config_v2.yaml")
-    CUSTOM_PROXIES_PATH = os.path.join(script_dir, "custom_proxies.config")
-
-# 自建节点文件路径（备选）
-CUSTOM_PROXIES_EXAMPLE_PATH = r"./custom_proxies.config.example"
 
 # 订阅地址列表文件路径
 # 优先使用 subs.config (私密配置，不提交到 Git)
@@ -28,6 +23,16 @@ CUSTOM_PROXIES_EXAMPLE_PATH = r"./custom_proxies.config.example"
 # 如果不存在，则使用 subs.config.example (示例模板，可提交到 Git)
 URL_LIST_PATH = r"./subs.config"  # 修改为工作目录外的路径
 URL_LIST_EXAMPLE_PATH = r"./subs.config.example"
+
+# 自建节点文件路径
+# 优先使用 custom_proxies.config (私密配置，不提交到 Git)
+# 建议将 custom_proxies.config 放在工作目录外部，例如：
+#   - Windows: E:\\Private\\custom_proxies.config
+#   - Linux/Mac: ~/Private/custom_proxies.config
+# 如果不存在，则使用 custom_proxies.config.example (示例模板，可提交到 Git)
+CUSTOM_PROXIES_PATH = r"./custom_proxies.config"  # 修改为工作目录外的路径
+CUSTOM_PROXIES_EXAMPLE_PATH = r"./custom_proxies.config.example"
+
 # 输出文件夹路径 (默认在当前目录 output 文件夹，不存在会自动创建)
 OUTPUT_DIR = r"./output/"
 
@@ -40,7 +45,7 @@ def load_custom_proxies():
     """
     custom_file = None
 
-    # 优先使用 custom_proxies.yaml (私密配置)
+    # 优先使用 custom_proxies.config (私密配置)
     if os.path.exists(CUSTOM_PROXIES_PATH):
         custom_file = CUSTOM_PROXIES_PATH
         print(f"✅ 找到自建节点配置: {CUSTOM_PROXIES_PATH}")
