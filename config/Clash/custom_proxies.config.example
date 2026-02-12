@@ -1,0 +1,78 @@
+# 自建节点配置文件示例
+#
+# 说明：
+# 1. 这个文件用于存放你的自建节点配置
+# 2. 如果文件中有节点配置，脚本会自动合并到生成的配置文件中
+# 3. 如果不需要自建节点，保持文件为空或只有注释即可
+# 4. 建议将实际配置文件命名为 custom_proxies.config（已在 .gitignore 中排除）
+#
+# 格式要求：
+# - 必须是有效的 YAML 格式
+# - 每个节点以 "- name:" 开头
+# - 支持所有 mihomo/Clash 支持的协议类型
+#
+# 节点配置示例：
+
+# VLESS 节点示例
+# - name: 自建香港VLESS
+#   type: vless
+#   server: hk.example.com
+#   port: 443
+#   uuid: your-uuid-here
+#   network: ws
+#   tls: true
+#   udp: true
+#   ws-opts:
+#     path: /path
+#     headers:
+#       Host: hk.example.com
+
+# Trojan 节点示例
+# - name: 自建日本Trojan
+#   type: trojan
+#   server: jp.example.com
+#   port: 443
+#   password: your-password-here
+#   udp: true
+#   sni: jp.example.com
+
+# VMess 节点示例
+# - name: 自建美国VMess
+#   type: vmess
+#   server: us.example.com
+#   port: 443
+#   uuid: your-uuid-here
+#   alterId: 0
+#   cipher: auto
+#   tls: true
+#   network: ws
+#   ws-opts:
+#     path: /path
+#     headers:
+#       Host: us.example.com
+
+# Shadowsocks 节点示例
+# - name: 自建新加坡SS
+#   type: ss
+#   server: sg.example.com
+#   port: 8388
+#   cipher: aes-256-gcm
+#   password: your-password-here
+#   udp: true
+
+# Hysteria2 节点示例
+# - name: 自建台湾Hysteria2
+#   type: hysteria2
+#   server: tw.example.com
+#   port: 443
+#   password: your-password-here
+#   sni: tw.example.com
+#   skip-cert-verify: false
+
+# 如果你有多个自建节点，直接在下方添加即可：
+# - name: 节点1
+#   type: ...
+#   ...
+# - name: 节点2
+#   type: ...
+#   ...

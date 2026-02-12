@@ -1,0 +1,18 @@
+# 订阅配置文件示例
+# 每行格式：NAME: URL
+# NAME 是订阅的名称（用于生成文件名）
+# URL 是订阅地址（必须以 http:// 或 https:// 开头）
+#
+# 注意：
+# 1. 以 # 开头的行会被忽略（注释行）
+# 2. 空行会被忽略
+# 3. 每个订阅会生成一个独立的配置文件
+#
+# URL 允许以下几类（示例均为占位符，不是真实域名/真实token）
+
+A: https://<host>/config/<token>
+B: https://<host>/subscribe?token=<token>
+C: https://<host>/subscribe?token=<token>
+D: https://<host>/sub?<token>
+E: https://<host>/subscribe?token=<token>
+F: https://<host>/link/<token>?clash=3&extend=1

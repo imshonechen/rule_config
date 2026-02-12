@@ -18,19 +18,19 @@ proxy-providers:
         # target: 将匹配到的Emoji替换为空字符串，从而实现移除
           target: null
         # 统一地区 香港 命名
-        - pattern: '(?i)(.*?)\s*(\bHong\s?Kong\b|\bHKG?\b|深港)\s*(香港)?(.*)'
+        - pattern: '(?i)(.*?)\s*(\bHong\s?Kong\b|\bHKG?\b|\bHK\b|深港)\s*(香港)?(.*)'
           target: '$1香港$4'
         # 统一地区 台湾 命名
-        - pattern: '(?i)(.*?)\s*(\bTaiwan\b|\bTWN?\b)\s*(台湾)?(.*)'
+        - pattern: '(?i)(.*?)\s*(\bTaiwan\b|\bTWN?\b|\bTW\b|臺灣)\s*(台湾)?(.*)'
           target: '$1台湾$4'
         # 统一地区 日本 命名
-        - pattern: '(?i)(.*?)\s*(\bJapan\b|\bJPN?\b|沪日)\s*(日本)?(.*)'
+        - pattern: '(?i)(.*?)\s*(\bJapan\b|\bJPN?\b|\bJP\b|沪日)\s*(日本)?(.*)'
           target: '$1日本$4'
         # 统一地区 韩国 命名
-        - pattern: '(?i)(.*?)\s*(\bKorea\b|\bKO?R\b)\s*(韩国)?(.*)'
+        - pattern: '(?i)(.*?)\s*(\bSouth\s?Korea\b|\bKorea\b|\bKR\b|\bKO?R\b)\s*(韩国)?(.*)'
           target: '$1韩国$4'
         # 统一地区 新加坡 命名
-        - pattern: '(?i)(.*?)\s*(\bSingapore\b|\bSGP?\b)\s*(狮城|新加坡)?(.*)'
+        - pattern: '(?i)(.*?)\s*(\bSingapore\b|\bSGP?\b|\bSG\b)\s*(狮城|新加坡)?(.*)'
           target: '$1新加坡$4'
         # 统一地区 美国 命名
         - pattern: '(?i)(.*?)\s*(\bUnited\s?States\b|\bUSA?\b|\bAmerica\b)\s*(美国)?(.*)'
@@ -66,13 +66,13 @@ proxy-providers:
         - pattern: '(?i)(.*?)\s*(\bUkraine\b|\bUKR\b|\bUA\b)\s*(乌克兰)?(.*)'
           target: '$1乌克兰$4'
         # 统一地区 英国 命名
-        - pattern: '(?i)(.*?)\s*(\bUnited\s?Kingdom\b|\bGBR?\b)\s*(英国)?(.*)'
+        - pattern: '(?i)(.*?)\s*(\bUnited\s?Kingdom\b|\bUK\b|\bGBR?\b|\bEngland\b)\s*(英国)?(.*)'
           target: '$1英国$4'
         # 统一地区 泰国 命名
         - pattern: '(?i)(.*?)\s*(\bThailand\b|\bTHA?\b)\s*(泰国)?(.*)'
           target: '$1泰国$4'
         # 统一地区 俄罗斯 命名
-        - pattern: '(?i)(.*?)\s*(\bRussian\b|\bRUS?\b)\s*(俄罗斯)?(.*)'
+        - pattern: '(?i)(.*?)\s*(\bRussia\b|\bRussian\b|\bRUS?\b)\s*(俄罗斯)?(.*)'
           target: '$1俄罗斯$4'
         # 统一地区 南极洲 命名
         - pattern: '(?i)(.*?)\s*(\bAntarctica\b|\bATA\b|\bAQ\b)\s*(南极洲)?(.*)'
@@ -87,20 +87,23 @@ proxy-providers:
         - pattern: '(?i)(.*?)\s*(\bIndonesia\b|\bIDN?\b|\b印度尼西亚\b)\s*(印尼)?(.*)'
           target: '$1印尼$4'
         # 统一地区 澳门 命名
-        - pattern: '(?i)(.*?)\s*(\bMacao\b|\bMAC\b|\bMO\b)\s*(澳门)?(.*)'
+        - pattern: '(?i)(.*?)\s*(\bMacao\b|\bMacau\b|\bMAC\b|\bMO\b)\s*(澳门)?(.*)'
           target: '$1澳门$4'
-        # 统一地区 尼日尼亚 命名
-        - pattern: '(?i)(.*?)\s*(\bNigeria\b|\bNGA?\b)\s*(尼日尼亚)?(.*)'
-          target: '$1尼日尼亚$4'
+        # 统一地区 尼日利亚 命名
+        - pattern: '(?i)(.*?)\s*(\bNigeria\b|\bNGA?\b)\s*(尼日利亚)?(.*)'
+          target: '$1尼日利亚$4'
         # 统一地区 阿根廷 命名
         - pattern: '(?i)(.*?)\s*(\bArgentina\b|\bARG?\b)\s*(阿根廷)?(.*)'
           target: '$1阿根廷$4'
         # 统一地区 巴西 命名
         - pattern: '(?i)(.*?)\s*(\bBrazil\b|\bBRA?\b)\s*(巴西)?(.*)'
-          target: '$1阿根廷$4'
-        # 统一倍率命名
-        - pattern: '(?i)(\d+(?:\.\d+)?)(?:倍|倍率|X)'
-          target: '$1x'
+          target: '$1巴西$4'
+        # 统一倍率命名 - 普通格式
+        - pattern: '(?i)\s(\d+(?:\.\d+)?|\.\d+)\s*(?:倍|倍率|X)'
+          target: ' $1x'
+        # 统一倍率命名 - 括号格式
+        - pattern: '(?i)([\[\(|])(\d+(?:\.\d+)?|\.\d+)\s*(?:倍|倍率|X)([\]\)|])'
+          target: '$1$2x$3'
 
 # 节点信息
 proxies:
