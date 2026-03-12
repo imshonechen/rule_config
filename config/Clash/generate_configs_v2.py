@@ -1,7 +1,6 @@
 import os
 import re
 import datetime
-import yaml
 
 # ================= 配置区域 =================
 # 模板文件路径
