@@ -240,15 +240,17 @@ rule-providers:
   # 去广告
   category-ads-all: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/category-ads-all.mrs", path: ./rules/category-ads-all.mrs, interval: 86400}
   # 自定义走国外
-  go_global: {type: http, format: yaml, behavior: classical, url: "https://raw.githubusercontent.com/imshonechen/CustomRules/main/forClash/ruleList/go_global.yaml", path: ./rules/go_global.yaml, interval: 86400}
+  go_global: {type: http, format: yaml, behavior: classical, url: "https://github.com/imshonechen/rule_config/raw/refs/heads/master/config/Clash/rule-providers/go_global.yaml", path: ./rules/go_global.yaml, interval: 86400}
   # 自定义走国内
-  go_cn: {type: http, format: yaml, behavior: classical, url: "https://raw.githubusercontent.com/imshonechen/CustomRules/main/forClash/ruleList/go_cn.yaml", path: ./rules/go_cn.yaml, interval: 86400}
+  go_cn: {type: http, format: yaml, behavior: classical, url: "https://github.com/imshonechen/rule_config/raw/refs/heads/master/config/Clash/rule-providers/go_cn.yaml", path: ./rules/go_cn.yaml, interval: 86400}
   # EMBY
-  emby_service: {type: http, format: yaml, behavior: classical, url: "https://raw.githubusercontent.com/imshonechen/CustomRules/main/forClash/ruleList/emby_service.yaml", path: ./rules/emby_service.yaml, interval: 86400}
+  emby_service: {type: http, format: yaml, behavior: classical, url: "https://github.com/imshonechen/rule_config/raw/refs/heads/master/config/Clash/rule-providers/emby_service.yaml", path: ./rules/emby_service.yaml, interval: 86400}
   loser: {type: http, format: text, behavior: classical, url: "https://raw.githubusercontent.com/zxcll/sub/refs/heads/main/loser.list", path: ./rules/loser.list, interval: 86400}
   category-emby: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/category-emby.mrs", path: ./rules/category-emby.mrs, interval: 86400}
   # PT
-  pt_service: {type: http, format: yaml, behavior: classical, url: "https://raw.githubusercontent.com/imshonechen/CustomRules/main/forClash/ruleList/pt_service.yaml", path: ./rules/pt_service.yaml, interval: 86400}
+  pt_service: {type: http, format: yaml, behavior: classical, url: "https://github.com/imshonechen/rule_config/raw/refs/heads/master/config/Clash/rule-providers/pt_service.yaml", path: ./rules/pt_service.yaml, interval: 86400}
+  pt_trackers: {type: http, format: yaml, behavior: classical, url: "https://github.com/imshonechen/rule_config/raw/refs/heads/master/config/Clash/rule-providers/pt_trackers.yaml", path: ./rules/pt_trackers.yaml, interval: 86400}
+  
   # GitHub
   github: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/github.mrs", path: ./rules/github.mrs, interval: 86400}
   gitlab: {type: http, format: mrs, behavior: domain, url: "https://github.com/MetaCubeX/meta-rules-dat/raw/refs/heads/meta/geo/geosite/gitlab.mrs", path: ./rules/gitlab.mrs, interval: 86400}
@@ -379,7 +381,8 @@ rules:
   - RULE-SET,category-emby,Emby,no-resolve
   #####################################
   # PT相关
-  - RULE-SET,pt_service,PT,no-resolve
+  - RULE-SET,pt_trackers,直连
+  - RULE-SET,pt_service,PT
   - PROCESS-NAME,qbittorrent,直连
   - PROCESS-NAME,qbittorrent.exe,直连
   - PROCESS-NAME,qbittorrent-nox,直连
