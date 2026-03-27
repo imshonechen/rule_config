@@ -1,76 +1,51 @@
-# https://raw.githubusercontent.com/imshonechen/CustomRules/refs/heads/main/forClash/ruleList/emby_service.yaml
-#     规则类型↓
-# DOMAIN: 完全匹配域名
-# DOMAIN-SUFFIX: 匹配域名后缀
-# DOMAIN-KEYWORD: 关键词匹配域名
-# GEOIP: IP地理位置 (国家代码)
-# IP-ASN: 匹配 IP 自治系统编号
-# IP-CIDR: 匹配IPv4地址段
-# IP-CIDR6: 匹配IPv6地址段
-# SRC-IP-CIDR: 源IP段地址
-# SRC-PORT: 源端口
-# DST-PORT: 目标端口
-# PROCESS-NAME: 源进程名
-# PROCESS-PATH: 源进程路径
-# IPSET: IP集
-# RULE-SET: 规则集
-# SCRIPT: 脚本
-# MATCH: 全匹配
-#     书写规范↓
-# 类型,参数
-#     常用↓
-# - DOMAIN,
-# - DOMAIN-SUFFIX,
-# - DOMAIN-KEYWORD,
-# - IP-CIDR,
-
 payload:
+  - DOMAIN,la.lovehd.de  # iLoveHD
+  - DOMAIN,u.lovehd.de  # iLoveHD
+  - DOMAIN,u3.la.wmuu.de  # iLoveHD
+  - DOMAIN,s1.la.wmuu.de  # iLoveHD
+  - DOMAIN,u1.la.wmuu.de  # iLoveHD
+  - DOMAIN,u2.la.wmuu.de  # iLoveHD
+  - DOMAIN,h1.la.wmuu.de  # iLoveHD
+  - DOMAIN,u2.lovehd.de  # iLoveHD
+  - DOMAIN,u1.lovehd.de  # iLoveHD
+  - DOMAIN,emby.900028.xyz  # 清泉
+  - DOMAIN,emby302.900028.xyz  # 清泉
+  - DOMAIN-SUFFIX,uhdnow.com  # UHD
+  - DOMAIN,www.uhdnow.com  # UHD
+  - DOMAIN,v1.uhdnow.com  # UHD
+  - DOMAIN,global.uhdnow.com  # UHD
+  - DOMAIN-SUFFIX,emos.lol  # emos
+  - DOMAIN-SUFFIX,emos.best  # emos
+  - DOMAIN-SUFFIX,emos.club  # emos @Elephant_E
+  - DOMAIN,prlon.com  # emos @Panlonn
+  - DOMAIN,emos.prlo.de  # emos @Panlonn 刮刮乐刮奖
+  - DOMAIN,uploader.prlo.de # emos @Panlonn 上传专用
+  - DOMAIN,binary.cc.cd  # emos 带图口令红包
+  - DOMAIN,wiki.emos.best  # emos wiki
+  - DOMAIN,medb.lat # 媒体库统计
+  # - DOMAIN-SUFFIX,makima.online # FAC
+  # - DOMAIN-SUFFIX,jiashule.com # FAC
+  - DOMAIN-SUFFIX,313445.xyz # FAC
+  - DOMAIN-SUFFIX,zox.show  # zox
+  - DOMAIN-SUFFIX,3767483.xyz  # zox
+  - DOMAIN-SUFFIX,nangua.de  # 南瓜
+  - DOMAIN-SUFFIX,xmsl.org  # 1111
+  - DOMAIN-SUFFIX,emby.moe  # 1111
+  - DOMAIN-SUFFIX,xxlb.net  # 1111
+  - DOMAIN-SUFFIX,niceduck.lol  # 1111
+  - DOMAIN-SUFFIX,emby.wiki   # lily
+  # - DOMAIN-SUFFIX,hxd.as174.de  # hxd
+  # - DOMAIN-SUFFIX,cdn.as174.de  # hxd
+  # - DOMAIN-SUFFIX,cf.bili.rip  # hxd
+  # - DOMAIN-SUFFIX,emby.as174.de  # hxd
+  - DOMAIN-SUFFIX,bili.rip  # hxd
+  - DOMAIN-SUFFIX,as174.de  # hxd
+  - DOMAIN-SUFFIX,nvidia.rip  # hxd
 
-  # FAC
-  # - DOMAIN-SUFFIX,makima.online
-  # - DOMAIN-SUFFIX,jiashule.com
-  - DOMAIN-SUFFIX,313445.xyz
-
-  # zox
-  - DOMAIN-SUFFIX,zox.show
-  - DOMAIN-SUFFIX,3767483.xyz
-
-  # 南瓜
-  - DOMAIN-SUFFIX,nangua.de
-
-  # 1111
-  - DOMAIN-SUFFIX,xmsl.org
-  - DOMAIN-SUFFIX,emby.moe
-  - DOMAIN-SUFFIX,xxlb.net
-  - DOMAIN-SUFFIX,niceduck.lol
-  
-  # lily
-  - DOMAIN-SUFFIX,emby.wiki
-
-  # hxd
-  # - DOMAIN-SUFFIX,hxd.as174.de
-  # - DOMAIN-SUFFIX,cdn.as174.de
-  # - DOMAIN-SUFFIX,cf.bili.rip
-  # - DOMAIN-SUFFIX,emby.as174.de
-  - DOMAIN-SUFFIX,bili.rip
-  - DOMAIN-SUFFIX,as174.de
-  - DOMAIN-SUFFIX,nvidia.rip
-
-  # UHD
-  - DOMAIN-SUFFIX,uhdnow.com
-
-  # emos
-  - DOMAIN-SUFFIX,emos.lol
-
-  # ocean
-  - DOMAIN-SUFFIX,emby.oceancloud.asia
-  - DOMAIN-SUFFIX,nsfw.oceancloud.asia
-  
-  # hka-emby
-  - DOMAIN,hka-emby.aliz.work
-
-  # others
-  - DOMAIN-SUFFIX,emby.nexitally.com
+  - DOMAIN-SUFFIX,emby.oceancloud.asia  # ocean
+  - DOMAIN-SUFFIX,nsfw.oceancloud.asia  # ocean
+  - DOMAIN,hka-emby.aliz.work  # hka-emby
+  - DOMAIN-SUFFIX,emby.nexitally.com  # others
   - DOMAIN-SUFFIX,emby.cjpc.cc
   - DOMAIN-SUFFIX,emby.flowercloud.yt
   - DOMAIN-SUFFIX,emby.maying.club
@@ -109,10 +84,10 @@ payload:
   - DOMAIN-SUFFIX,jellyfin.xeton.dev
   - DOMAIN-SUFFIX,movie.xeton.dev
   - DOMAIN-SUFFIX,servers.xeton.dev
-  - DOMAIN-SUFFIX,jmsooo.com
-  - DOMAIN-SUFFIX,cf.jmsooo.com
-  - DOMAIN-SUFFIX,hk.jmsooo.com
-  - DOMAIN-SUFFIX,sg.jmsooo.com
+  - DOMAIN-SUFFIX,jmsooo.com  # JMS
+  - DOMAIN-SUFFIX,cf.jmsooo.com  # JMS
+  - DOMAIN-SUFFIX,hk.jmsooo.com  # JMS
+  - DOMAIN-SUFFIX,sg.jmsooo.com  # JMS
   - DOMAIN-SUFFIX,emby.wtf
   - DOMAIN-SUFFIX,pub1back.emby.wtf
   - DOMAIN-SUFFIX,pub2back.emby.wtf
