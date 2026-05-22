@@ -31,4 +31,6 @@ payload:
   - DOMAIN-SUFFIX,sayqz.com  # TuneFreeNext    
   - DOMAIN,downupdate.yz.tcdnos.com  # 腾讯游戏更新
   - PROCESS-NAME,QQSpeedGLauncherPDL.exe  # QQ飞车更新
+  - DOMAIN-SUFFIX,edu.cn # 中国教育网
+  - DOMAIN-SUFFIX,gov.cn # 中国政府网
  
