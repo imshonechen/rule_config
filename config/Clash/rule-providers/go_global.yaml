@@ -8,6 +8,11 @@ payload:
   - DOMAIN-SUFFIX,hostloc.com  # HOSTLOC
   - DOMAIN-SUFFIX,linux.do # L站 走直连不太稳，有时候会卡
   - DOMAIN,api.deeplx.org # L站 翻译
+  - DOMAIN-SUFFIX,nodeseek.com # NodeSeek
+  - DOMAIN-SUFFIX,nodeseek.org # NodeSeek nav
+  - DOMAIN-SUFFIX,seek.li # NodeSeek Mail
+  - DOMAIN-SUFFIX,deepflood.com # NodeSeek deep
+  - DOMAIN-SUFFIX,nodeimage.com # NodeSeek Image
   - DOMAIN-SUFFIX,haitunt.org # 海豚
   - DOMAIN-SUFFIX,mojie.app  # 魔戒
   - DOMAIN,mojie0201.xn--8stx8olrwkucjq3b.com  # 魔戒
