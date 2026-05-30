@@ -45,3 +45,4 @@ payload:
   - DOMAIN-SUFFIX,tagxx.vip  # TAG
   - DOMAIN-SUFFIX,bygcloud.com  # 白月光  
   - DOMAIN-SUFFIX,mitm.it  # mitm  
+  - DOMAIN-SUFFIX,anyrouter.top # AnyRouter AI中转站
