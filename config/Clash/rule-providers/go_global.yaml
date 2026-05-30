@@ -8,7 +8,7 @@ payload:
   - DOMAIN-SUFFIX,hostloc.com  # HOSTLOC
   - DOMAIN-SUFFIX,linux.do # L站 走直连不太稳，有时候会卡
   - DOMAIN,api.deeplx.org # L站 翻译
-  - DOMAIN-SUFFIX,nodeseek.com # NodeSeek
+  - DOMAIN-SUFFIX,nodeseek.com # NodeSeek Sharon/Gomami的网络ip段(AS396856/AS36002等)，整体加入到低通量的回源服务器节点
   - DOMAIN-SUFFIX,nodeseek.org # NodeSeek nav
   - DOMAIN-SUFFIX,seek.li # NodeSeek Mail
   - DOMAIN-SUFFIX,deepflood.com # NodeSeek deep
