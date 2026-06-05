@@ -33,4 +33,5 @@ payload:
   - PROCESS-NAME,QQSpeedGLauncherPDL.exe  # QQ飞车更新
   - DOMAIN-SUFFIX,edu.cn # 中国教育网
   - DOMAIN-SUFFIX,gov.cn # 中国政府网
+  - PROCESS-NAME,clouddrive.exe # CD2
  
