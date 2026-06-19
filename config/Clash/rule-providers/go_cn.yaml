@@ -34,4 +34,5 @@ payload:
   - DOMAIN-SUFFIX,edu.cn # 中国教育网
   - DOMAIN-SUFFIX,gov.cn # 中国政府网
   - PROCESS-NAME,clouddrive.exe # CD2
- 
+  - DOMAIN-SUFFIX,huamucang.top # 聚影
+  - DOMAIN-SUFFIX,doubaninfo.com # 豆影
