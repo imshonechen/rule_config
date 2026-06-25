@@ -1,4 +1,7 @@
 payload:
+  - PROCESS-NAME,qbittorrent.exe
+  - PROCESS-NAME,transmission-qt.exe
+  - PROCESS-NAME,transmission.exe
   - DOMAIN,tracker.hdchina.org
   - DOMAIN,on.springsunday.net
   - DOMAIN,t.hdhome.org
