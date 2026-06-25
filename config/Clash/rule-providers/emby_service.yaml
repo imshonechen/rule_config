@@ -1,4 +1,9 @@
 payload:
+  - PROCESS-NAME,RodelPlayer.App.exe
+  - PROCESS-NAME,HillsLite.exe
+  - PROCESS-NAME,com.mountains.hills
+  - PROCESS-NAME,com.hush.yamby
+  - PROCESS-NAME,com.oumi.utility.media.hub
   - DOMAIN,la.lovehd.de  # iLoveHD
   - DOMAIN,u.lovehd.de  # iLoveHD
   - DOMAIN,u3.la.wmuu.de  # iLoveHD
