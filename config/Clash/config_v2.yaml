@@ -77,10 +77,10 @@ proxy-name-rules: &proxy-name-rules
     target: '$1$2x$3'
 
 proxy-providers:
-  订阅1: {type: http, url: "https://ryanvanson.github.io/emptyyaml/empty.yaml", path: ./providers/sub1.yaml, interval: 3600, health-check: {enable: true, url: "http://www.google.com/generate_204", interval: 300, lazy: true}, override: {additional-prefix: 'ᴬ', proxy-name: *proxy-name-rules}}
-  # 订阅2: {type: http, url: "https://ryanvanson.github.io/emptyyaml/empty.yaml", path: ./providers/sub2.yaml, interval: 3600, health-check: {enable: true, url: "https://cp.cloudflare.com", interval: 300, lazy: true}, override: {additional-prefix: 'ᴮ', proxy-name: *proxy-name-rules}}
-  # 订阅3: {type: http, url: "https://ryanvanson.github.io/emptyyaml/empty.yaml", path: ./providers/sub3.yaml, interval: 3600, health-check: {enable: true, url: "https://cp.cloudflare.com", interval: 300, lazy: true}, override: {additional-prefix: 'ᶜ', proxy-name: *proxy-name-rules}}
-  # 订阅4: {type: http, url: "https://ryanvanson.github.io/emptyyaml/empty.yaml", path: ./providers/sub4.yaml, interval: 3600, health-check: {enable: true, url: "https://cp.cloudflare.com", interval: 300, lazy: true}, override: {additional-prefix: 'ᴰ', proxy-name: *proxy-name-rules}}
+  订阅1: {type: http, url: "https://ryanvanson.github.io/emptyyaml/empty.yaml", path: ./providers/sub1.yaml, interval: 3600, health-check: {enable: true, url: "https://www.g.cn/generate_204", interval: 300, lazy: true}, override: {additional-prefix: 'ᴬ', proxy-name: *proxy-name-rules}}
+  # 订阅2: {type: http, url: "https://ryanvanson.github.io/emptyyaml/empty.yaml", path: ./providers/sub2.yaml, interval: 3600, health-check: {enable: true, url: "https://www.g.cn/generate_204", interval: 300, lazy: true}, override: {additional-prefix: 'ᴮ', proxy-name: *proxy-name-rules}}
+  # 订阅3: {type: http, url: "https://ryanvanson.github.io/emptyyaml/empty.yaml", path: ./providers/sub3.yaml, interval: 3600, health-check: {enable: true, url: "https://www.g.cn/generate_204", interval: 300, lazy: true}, override: {additional-prefix: 'ᶜ', proxy-name: *proxy-name-rules}}
+  # 订阅4: {type: http, url: "https://ryanvanson.github.io/emptyyaml/empty.yaml", path: ./providers/sub4.yaml, interval: 3600, health-check: {enable: true, url: "https://www.g.cn/generate_204", interval: 300, lazy: true}, override: {additional-prefix: 'ᴰ', proxy-name: *proxy-name-rules}}
   # 订阅5: {type: http, url: "https://ryanvanson.github.io/emptyyaml/empty.yaml", path: ./providers/sub5.yaml, interval: 3600, health-check: {enable: true, url: "https://cp.cloudflare.com", interval: 300, lazy: true}, override: {additional-prefix: 'ᴱ', proxy-name: *proxy-name-rules}}
 
 # =========================
@@ -104,7 +104,7 @@ us_s: &us_s {filter: '(?i)^(?=.*(?:🇺🇸|美国|美國|\bUS\b|\bUSA\b|United\
 # 该锚点为: 筛选 大于1倍率 的高倍率节点
 high_rate: &high_rate {filter: '(?i)^(?=.*(?:^|[^0-9.])(?:1\.(?:0*[1-9]\d*)|[2-9]\d*(?:\.\d+)?|\d{2,}(?:\.\d+)?)(?:\s*)(?:[xX×]|倍|倍率)\b|(?:^|[^0-9.])(?:1\.(?:0*[1-9]\d*)|[2-9]\d*\.\d+|[1-9]\d+\.\d+)\s*$).*$'}
 # 该锚点为: 排除关键关键词的节点
-ef: &ef {url: 'http://www.google.com/generate_204', exclude-filter: "(?i)建议|过滤|剩余|流量|重置|距离|套餐|官网|网址|到期|direct|Traffic|Expire|Reset|www"}
+ef: &ef {url: 'https://www.g.cn/generate_204', exclude-filter: "(?i)建议|过滤|剩余|流量|重置|距离|套餐|官网|网址|到期|direct|Traffic|Expire|Reset|www"}
 proxy-groups:
   - { name: 默认选择, type: select, proxies: [香港节点,台湾节点,日本节点,新加坡节点,美国节点,高倍率,直连], include-all: true, <<: *ef }
   - { name: 香港节点, type: select, proxies: [香港最快,香港故转], include-all: true,  <<: [*hk_s, *ef] }
