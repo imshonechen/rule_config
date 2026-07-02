@@ -389,7 +389,7 @@ dns:
     # - RULE-SET,category-ads-all,fake-ip
     #####################################
     # 自定义强制直连或代理
-    - RULE-SET,go_cn,real-ip
+    # - RULE-SET,go_cn,real-ip
     # - RULE-SET,go_global,fake-ip
     #####################################
     # Emby相关
@@ -399,7 +399,7 @@ dns:
     #####################################
     # PT相关
     - RULE-SET,pt_trackers,real-ip
-    - RULE-SET,pt_service,real-ip
+    # - RULE-SET,pt_service,real-ip
     
     #####################################
     # GitHub
@@ -464,10 +464,10 @@ dns:
     # - RULE-SET,soundcloud,fake-ip
     #####################################
     # 大陆流媒体
-    - RULE-SET,bilibili,real-ip
-    - RULE-SET,iqiyi,real-ip
-    - RULE-SET,youku,real-ip
-    - RULE-SET,TencentVideo_No_Resolve,real-ip
+    # - RULE-SET,bilibili,real-ip
+    # - RULE-SET,iqiyi,real-ip
+    # - RULE-SET,youku,real-ip
+    # - RULE-SET,TencentVideo_No_Resolve,real-ip
     #####################################
     # 加密货币
     # - RULE-SET,category-cryptocurrency,fake-ip
@@ -476,7 +476,7 @@ dns:
     # - RULE-SET,category-speedtest,fake-ip
     #####################################
     # 游戏平台
-    - RULE-SET,category-game-platforms-download@cn,real-ip
+    # - RULE-SET,category-game-platforms-download@cn,real-ip
     # - RULE-SET,steam,fake-ip
     # - RULE-SET,epicgames,fake-ip
     # - RULE-SET,ea,fake-ip
@@ -497,7 +497,7 @@ dns:
     # - RULE-SET,heroku,fake-ip
     # - RULE-SET,dropbox,fake-ip
     # 阿里云
-    - RULE-SET,aliyun,real-ip
+    # - RULE-SET,aliyun,real-ip
     # - RULE-SET,alibabacloud,fake-ip
     #####################################
     # 御三家
@@ -508,9 +508,9 @@ dns:
     # - RULE-SET,apple,fake-ip
     #####################################
     # 国内站
-    - RULE-SET,geolocation-cn,real-ip
+    # - RULE-SET,geolocation-cn,real-ip
     # 国内兜底
-    - GEOSITE,cn,real-ip
+    # - GEOSITE,cn,real-ip
     # - GEOIP,cn,直连,no-resolve
     # - GEOIP,cn,直连
     # 兜底出海
@@ -691,7 +691,7 @@ rule-providers:
 rules:
   #####################################
   # 拦 QUIC：UDP/443
-  - AND,((NETWORK,UDP),(DST-PORT,443)),REJECT
+  # - AND,((NETWORK,UDP),(DST-PORT,443)),REJECT
   #####################################
   # 端口白名单：特殊端口
   # - NOT,((DST-PORT,21/22/23/53/80/123/143/194/443/465/587/853/993/995/998/2052-2053/2082-2083/2086/2095-2096/3389/5222/5228-5230/8080/8443/8880/8888-8889)),DIRECT
@@ -813,13 +813,17 @@ rules:
   # 测速
   - RULE-SET,category-speedtest,测速
   #####################################
-  # 游戏平台
+  # 游戏
   - RULE-SET,category-game-platforms-download@cn,直连
   - RULE-SET,steam,游戏
   - RULE-SET,epicgames,游戏
   - RULE-SET,ea,游戏
   - RULE-SET,ubisoft,游戏
   - RULE-SET,blizzard,游戏
+  - PROCESS-NAME,GameApp.exe,直连  # 飞车
+  - PROCESS-NAME,QQDownloadAssistant.exe,直连  # 飞车
+  - PROCESS-NAME-WILDCARD,QQSpeed*.exe,直连  # 飞车
+  
   #####################################
   # 金融
   - RULE-SET,paypal,金融
