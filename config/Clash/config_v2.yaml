@@ -159,63 +159,394 @@ proxy-groups:
 # 基础配置
 # =========================
 mixed-port: 7890
-allow-lan: true
-bind-address: '*'
+
+# Windows / Android / Linux 和 IPv6 稳定时
+ipv6: true
+# iOS 或移动网络 IPv6 不稳定时
+# ipv6: false
+
+# 允许其他设备经过 Clash 的代理端口访问互联网
+# Windows / Android / iOS 推荐
+allow-lan: false
+# Linux/OpenWrt 或局域网共享推荐
+# allow-lan: true
+
+# Windows / Android / iOS 推荐
+bind-address: 127.0.0.1
+# Linux/OpenWrt 或局域网共享推荐
+# bind-address: '*'
+
 mode: rule
-log-level: info
-external-controller: '127.0.0.1:9090'
+
+# 排障时可临时改为 info
+log-level: error
+
+# Windows / Android / iOS 推荐
+external-controller: 127.0.0.1:9090
+# Linux/OpenWrt 需要局域网访问面板时
+# external-controller: 0.0.0.0:9090
+# Linux/OpenWrt 开放 external-controller 时建议设置 secret
+# secret: "change-me-to-a-long-random-token"
+
 unified-delay: true
+
 tcp-concurrent: true
 
+# 缓存配置
+profile:
+  store-selected: true
+
+  # Windows / Android / Linux 推荐
+  store-fake-ip: true
+  # iOS 客户端不支持 fake-ip 持久化时
+  # store-fake-ip: false
+# =========================
+# Tun 配置
+# =========================
+tun:
+  # Windows / Android / Linux 推荐
+  enable: true
+  # iOS 客户端不完整支持 TUN 时
+  # enable: false
+
+  stack: mixed
+
+  auto-route: true
+
+  # Windows / Android / iOS 推荐
+  auto-redirect: false
+  # Linux/OpenWrt 透明代理场景推荐
+  # auto-redirect: true
+
+  auto-detect-interface: true
+
+  strict-route: true
+
+  disable-icmp-forwarding: true
+
+  # endpoint-independent-nat: true
+
+  dns-hijack: [any:53,tcp://any:53]
+
+  udp-timeout: 600
+# =========================
+# hosts 配置
+# =========================
+hosts:
+  dns.alidns.com: [223.5.5.5,223.6.6.6,'2400:3200::1','2400:3200:baba::1']
+  doh.pub: [120.53.53.53,1.12.12.21]
+  dns.google: [8.8.8.8,8.8.4.4,'2001:4860:4860::8888','2001:4860:4860::8844']
+  dns.quad9.net: [9.9.9.9,149.112.112.112,'2620:fe::fe','2620:fe::9']
+  services.googleapis.cn: services.googleapis.com
+  google.cn: google.com
+  cn.bing.com: global.bing.com
 # =========================
 # DNS配置
 # =========================
 dns:
   enable: true
-  listen: "0.0.0.0:1053"
-  ipv6: false
+
+  # Windows / Android / iOS 推荐
+  listen: "127.0.0.1:1053"
+  # Linux/OpenWrt 局域网 DNS 服务
+  # listen: "0.0.0.0:1053"
+
+  # Windows / Android / Linux 和 IPv6 稳定时
+  ipv6: true
+  # iOS 或移动网络 IPv6 不稳定时
+  # ipv6: false
+
   cache-algorithm: arc
+
+  # Windows / Android / Linux 推荐
   enhanced-mode: fake-ip
+  # iOS 客户端不完整支持 fake-ip 时
+  # enhanced-mode: redir-host
+
+  # 和 respect-rules 同用时建议 false
   prefer-h3: false
+
+  # Windows / Android / Linux 推荐
   respect-rules: true # 强烈不建议和 prefer-h3 一起使用
-  fake-ip-range: 198.18.0.1/16
-  default-nameserver: [tls://223.5.5.5, tls://223.6.6.6]
+  # iOS 客户端不支持 respect-rules 时
+  # respect-rules: false
+ 
+  # 解析所有带域名的 DOH 的 DNS
+  default-nameserver: 
+    - 223.5.5.5
+    - 119.29.29.29
+  # 解析节点的域名的 DNS
   proxy-server-nameserver:
-    - https://doh.pub/dns-query
     - https://dns.alidns.com/dns-query
+    - https://doh.pub/dns-query
+  # 默认的域名解析服务器
+  nameserver:
+    - https://dns.google/dns-query#RULES
+    - https://1.1.1.1/dns-query#RULES
+    - https://dns.quad9.net/dns-query#RULES
+  # 指定域名查询的解析服务器，可使用 geosite
+  nameserver-policy:
+    "+.getdesign.md,+.jable.tv,+.onejav.com":  # MJ
+      - 114.114.114.114
+    "planb.mojcn.com,m.cnmjin.net,t.cnmjcn.cyou":    # DN
+      - https://api.edgequery.cc:40443/dns-query
+      - https://39.173.146.159:8443/dns-query
+      - https://36.150.95.34:8443/dns-query
+      - https://api.edgequery.net:40443/dns-query
+    "geosite:cn,private":
+      - https://doh.pub/dns-query
+      - https://dns.alidns.com/dns-query
+  # 用于 direct 出口域名解析的 DNS 服务器，
+  # 如果不填则遵循 nameserver-policy、nameserver 和 fallback 的配置
   direct-nameserver: 
     - https://doh.pub/dns-query
     - https://dns.alidns.com/dns-query
-  nameserver:
-    - https://doh.pub/dns-query
-    - https://dns.alidns.com/dns-query
-  fallback:
-    - tls://1.1.1.1
-    - tls://8.8.4.4
-    - https://cloudflare-dns.com/dns-query
-    - https://dns.google/dns-query
-  fallback-filter: 
-    geoip: true
-    ipcidr: [240.0.0.0/4, 0.0.0.0/32, 127.0.0.1/8]
-    domain: [+.google.com, +.facebook.com, +.twitter.com, +.youtube.com, +.xn--ngstr-lra8j.com, +.google.cn, +.googleapis.cn, +.googleapis.com, +.gvt1.com]
-  fake-ip-filter: ["*.lan", "+.local", "+.home.arpa", "stun.*.*.*", "stun.*.*", time.windows.com, time.nist.gov, time.apple.com, time.asia.apple.com, "*.ntp.org.cn", "*.openwrt.pool.ntp.org", time1.cloud.tencent.com, time.ustc.edu.cn, pool.ntp.org, ntp.ubuntu.com, ntp.aliyun.com, ntp1.aliyun.com, ntp2.aliyun.com, ntp3.aliyun.com, ntp4.aliyun.com, ntp5.aliyun.com, ntp6.aliyun.com, ntp7.aliyun.com, time1.aliyun.com, time2.aliyun.com, time3.aliyun.com, time4.aliyun.com, time5.aliyun.com, time6.aliyun.com, time7.aliyun.com, "*.time.edu.cn", time1.apple.com, time2.apple.com, time3.apple.com, time4.apple.com, time5.apple.com, time6.apple.com, time7.apple.com, time1.google.com, time2.google.com, time3.google.com, time4.google.com, music.163.com, "*.music.163.com", "*.126.net", musicapi.taihe.com, music.taihe.com, songsearch.kugou.com, trackercdn.kugou.com, "*.kuwo.cn", api-jooxtt.sanook.com, api.joox.com, joox.com, y.qq.com, "*.y.qq.com", streamoc.music.tc.qq.com, mobileoc.music.tc.qq.com, isure.stream.qqmusic.qq.com, dl.stream.qqmusic.qq.com, aqqmusic.tc.qq.com, amobile.music.tc.qq.com, "*.xiami.com", "*.music.migu.cn", music.migu.cn, "*.msftconnecttest.com", "*.msftncsi.com", localhost.ptlogin2.qq.com, "*.*.*.srv.nintendo.net", "*.*.stun.playstation.net", "xbox.*.*.microsoft.com", "*.ipv6.microsoft.com", "*.*.xboxlive.com", speedtest.cros.wr.pvp.net]
-
-# =========================
-# 配置文件管理
-# =========================
-profile:
-  store-selected: true
-  store-fake-ip: false
+  # 在 direct-nameserver 存在时，依然以 nameserver-policy 优先
+  direct-nameserver-follow-policy: true
+  
+  fake-ip-range: 198.18.0.1/16
+  fake-ip-range6: fdfe:dcba:9876::1/64
+  fake-ip-filter-mode: rule
+  fake-ip-filter: 
+    - DOMAIN-SUFFIX,lan,real-ip
+    - DOMAIN-SUFFIX,local,real-ip
+    - DOMAIN-SUFFIX,arpa,real-ip
+    - DOMAIN-WILDCARD,time.*.com,real-ip
+    - DOMAIN-WILDCARD,ntp.*.com,real-ip
+    - DOMAIN-SUFFIX,market.xiaomi.com,real-ip
+    - DOMAIN-WILDCARD,stun.*.*.*,real-ip
+    - DOMAIN-WILDCARD,stun.*.*,real-ip
+    - DOMAIN,time.windows.com,real-ip
+    - DOMAIN,time.nist.gov,real-ip
+    - DOMAIN,time.apple.com,real-ip
+    - DOMAIN,time.asia.apple.com,real-ip
+    - DOMAIN-SUFFIX,ntp.org.cn,real-ip
+    - DOMAIN-SUFFIX,openwrt.pool.ntp.org,real-ip
+    - DOMAIN,time1.cloud.tencent.com,real-ip
+    - DOMAIN,time.ustc.edu.cn,real-ip
+    - DOMAIN,pool.ntp.org,real-ip
+    - DOMAIN,ntp.ubuntu.com,real-ip
+    - DOMAIN,ntp.aliyun.com,real-ip
+    - DOMAIN,ntp1.aliyun.com,real-ip
+    - DOMAIN,ntp2.aliyun.com,real-ip
+    - DOMAIN,ntp3.aliyun.com,real-ip
+    - DOMAIN,ntp4.aliyun.com,real-ip
+    - DOMAIN,ntp5.aliyun.com,real-ip
+    - DOMAIN,ntp6.aliyun.com,real-ip
+    - DOMAIN,ntp7.aliyun.com,real-ip
+    - DOMAIN,time1.aliyun.com,real-ip
+    - DOMAIN,time2.aliyun.com,real-ip
+    - DOMAIN,time3.aliyun.com,real-ip
+    - DOMAIN,time4.aliyun.com,real-ip
+    - DOMAIN,time5.aliyun.com,real-ip
+    - DOMAIN,time6.aliyun.com,real-ip
+    - DOMAIN,time7.aliyun.com,real-ip
+    - DOMAIN-SUFFIX,time.edu.cn,real-ip
+    - DOMAIN,time1.apple.com,real-ip
+    - DOMAIN,time2.apple.com,real-ip
+    - DOMAIN,time3.apple.com,real-ip
+    - DOMAIN,time4.apple.com,real-ip
+    - DOMAIN,time5.apple.com,real-ip
+    - DOMAIN,time6.apple.com,real-ip
+    - DOMAIN,time7.apple.com,real-ip
+    - DOMAIN,time1.google.com,real-ip
+    - DOMAIN,time2.google.com,real-ip
+    - DOMAIN,time3.google.com,real-ip
+    - DOMAIN,time4.google.com,real-ip
+    - DOMAIN-SUFFIX,music.163.com,real-ip
+    - DOMAIN-SUFFIX,126.net,real-ip
+    - DOMAIN,musicapi.taihe.com,real-ip
+    - DOMAIN,music.taihe.com,real-ip
+    - DOMAIN,songsearch.kugou.com,real-ip
+    - DOMAIN,trackercdn.kugou.com,real-ip
+    - DOMAIN-SUFFIX,kuwo.cn,real-ip
+    - DOMAIN,api-jooxtt.sanook.com,real-ip
+    - DOMAIN,api.joox.com,real-ip
+    - DOMAIN,joox.com,real-ip
+    - DOMAIN-SUFFIX,y.qq.com,real-ip
+    - DOMAIN,streamoc.music.tc.qq.com,real-ip
+    - DOMAIN,mobileoc.music.tc.qq.com,real-ip
+    - DOMAIN,isure.stream.qqmusic.qq.com,real-ip
+    - DOMAIN,dl.stream.qqmusic.qq.com,real-ip
+    - DOMAIN,aqqmusic.tc.qq.com,real-ip
+    - DOMAIN,amobile.music.tc.qq.com,real-ip
+    - DOMAIN-SUFFIX,xiami.com,real-ip
+    - DOMAIN-SUFFIX,music.migu.cn,real-ip
+    - DOMAIN-SUFFIX,msftconnecttest.com,real-ip
+    - DOMAIN-SUFFIX,msftncsi.com,real-ip
+    - DOMAIN,localhost.ptlogin2.qq.com,real-ip
+    - DOMAIN-WILDCARD,*.*.*.srv.nintendo.net,real-ip
+    - DOMAIN-WILDCARD,*.*.stun.playstation.net,real-ip
+    - DOMAIN-WILDCARD,xbox.*.*.microsoft.com,real-ip
+    - DOMAIN-SUFFIX,ipv6.microsoft.com,real-ip
+    - DOMAIN-WILDCARD,*.*.xboxlive.com,real-ip
+    - DOMAIN,speedtest.cros.wr.pvp.net,real-ip
+    # 私网/LAN
+    - RULE-SET,private,real-ip
+    # - RULE-SET,privateIP,real-ip
+    #####################################
+    # 广告拦截
+    # - RULE-SET,category-ads-all,fake-ip
+    #####################################
+    # 自定义强制直连或代理
+    - RULE-SET,go_cn,real-ip
+    # - RULE-SET,go_global,fake-ip
+    #####################################
+    # Emby相关
+    # - RULE-SET,emby_service,fake-ip
+    # - RULE-SET,loser,fake-ip
+    # - RULE-SET,category-emby,fake-ip
+    #####################################
+    # PT相关
+    - RULE-SET,pt_trackers,real-ip
+    - RULE-SET,pt_service,real-ip
+    
+    #####################################
+    # GitHub
+    # - RULE-SET,github,fake-ip
+    # - RULE-SET,gitlab,fake-ip
+    # AI服务
+    # - RULE-SET,category-ai-chat-!cn,fake-ip
+    # 教育学术
+    # - RULE-SET,coursera,fake-ip
+    # - RULE-SET,edx,fake-ip
+    # - RULE-SET,udemy,fake-ip
+    # - RULE-SET,khanacademy,fake-ip
+    # - RULE-SET,category-scholar-!cn,fake-ip
+    #####################################
+    # 电报
+    # - RULE-SET,telegram,fake-ip
+    # - RULE-SET,telegramIP,电报,no-resolve
+    #####################################
+    # 社交媒体
+    # - RULE-SET,facebook,fake-ip
+    # - RULE-SET,instagram,fake-ip
+    # - RULE-SET,twitter,fake-ip
+    # - RULE-SET,x,fake-ip
+    # - RULE-SET,tiktok,fake-ip
+    # - RULE-SET,linkedin,fake-ip
+    # - RULE-SET,discord,fake-ip
+    # - RULE-SET,threads,fake-ip
+    #####################################
+    # 亚洲流媒体
+    # - RULE-SET,WeTV_No_Resolve,fake-ip
+    # - RULE-SET,abema,fake-ip
+    # - RULE-SET,bahamut,fake-ip
+    # - RULE-SET,dmm,fake-ip
+    # - RULE-SET,HuluJP_No_Resolve,fake-ip
+    # - RULE-SET,iqiyi@!cn,fake-ip
+    # - RULE-SET,japonx,fake-ip
+    # - RULE-SET,JOOX_No_Resolve,fake-ip
+    # - RULE-SET,kkbox,fake-ip
+    # - RULE-SET,kktv,fake-ip
+    # - RULE-SET,LineTV_No_Resolve,fake-ip
+    # - RULE-SET,mytvsuper,fake-ip
+    # - RULE-SET,niconico,fake-ip
+    # - RULE-SET,viu,fake-ip
+    # - RULE-SET,bilibili@!cn,fake-ip
+    #####################################
+    # 全球流媒体
+    # - RULE-SET,youtube,fake-ip
+    # - RULE-SET,netflix,fake-ip
+    # - RULE-SET,disney,fake-ip
+    # - RULE-SET,hbo,fake-ip
+    # - RULE-SET,hulu,fake-ip
+    # - RULE-SET,spotify,fake-ip
+    # - RULE-SET,apple-tvplus,fake-ip
+    # - RULE-SET,abc,fake-ip
+    # - RULE-SET,primevideo,fake-ip
+    # - RULE-SET,bbc,fake-ip
+    # - RULE-SET,dazn,fake-ip
+    # - RULE-SET,discoveryplus,fake-ip
+    # - RULE-SET,fox,fake-ip
+    # - RULE-SET,pbs,fake-ip
+    # - RULE-SET,pornhub,fake-ip
+    # - RULE-SET,soundcloud,fake-ip
+    #####################################
+    # 大陆流媒体
+    - RULE-SET,bilibili,real-ip
+    - RULE-SET,iqiyi,real-ip
+    - RULE-SET,youku,real-ip
+    - RULE-SET,TencentVideo_No_Resolve,real-ip
+    #####################################
+    # 加密货币
+    # - RULE-SET,category-cryptocurrency,fake-ip
+    #####################################
+    # 测速
+    # - RULE-SET,category-speedtest,fake-ip
+    #####################################
+    # 游戏平台
+    - RULE-SET,category-game-platforms-download@cn,real-ip
+    # - RULE-SET,steam,fake-ip
+    # - RULE-SET,epicgames,fake-ip
+    # - RULE-SET,ea,fake-ip
+    # - RULE-SET,ubisoft,fake-ip
+    # - RULE-SET,blizzard,fake-ip
+    #####################################
+    # 金融
+    # - RULE-SET,paypal,fake-ip
+    # - RULE-SET,visa,fake-ip
+    # - RULE-SET,mastercard,fake-ip
+    # - RULE-SET,stripe,fake-ip
+    # - RULE-SET,wise,fake-ip
+    #####################################
+    # 云服务
+    # - RULE-SET,aws,fake-ip
+    # - RULE-SET,azure,fake-ip
+    # - RULE-SET,digitalocean,fake-ip
+    # - RULE-SET,heroku,fake-ip
+    # - RULE-SET,dropbox,fake-ip
+    # 阿里云
+    - RULE-SET,aliyun,real-ip
+    # - RULE-SET,alibabacloud,fake-ip
+    #####################################
+    # 御三家
+    # - RULE-SET,googlefcm,fake-ip
+    # - RULE-SET,google,fake-ip
+    # - RULE-SET,microsoft,fake-ip
+    # - RULE-SET,applemusic,fake-ip
+    # - RULE-SET,apple,fake-ip
+    #####################################
+    # 国内站
+    - RULE-SET,geolocation-cn,real-ip
+    # 国内兜底
+    - GEOSITE,cn,real-ip
+    # - GEOIP,cn,直连,no-resolve
+    # - GEOIP,cn,直连
+    # 兜底出海
+    - MATCH,fake-ip
 
 # =========================
 # 域名/流量嗅探
 # =========================
 sniffer:
-  enable: true
+  # 是否启用 sniffer
+  enable: true  
+  # 对 redir-host 类型识别的流量进行强制嗅探
+  force-dns-mapping: true
+  # 对所有未获取到域名的流量进行强制嗅探
   parse-pure-ip: true
+  # 是否使用嗅探结果作为实际访问，默认为 true
+  override-destination: false
+  # 需要嗅探的协议设置，仅支持 HTTP/TLS/QUIC
+  # ports: 端口范围
+  # override-destination: 覆盖全局override-destination设置
   sniff:
-    TLS: {ports: [443, 8443], override-destination: true}
-    HTTP: {ports: [80, 8080, 8000, 8880, 8888], override-destination: true}
+    HTTP: 
+      ports: [80, 8080-8888]
+      override-destination: true
+    TLS: 
+      ports: [443, 8443]
+      override-destination: true    
+    QUIC:
+      ports: [443, 8443]
+  # 跳过嗅探的域名列表，使用域名通配
+  skip-domain: []
+  # 跳过嗅探的来源 IP 段列表
+  skip-src-address: []
+  skip-dst-address:
+    - "rule-set:telegramIP"
+    - "rule-set:privateIP"
 
 # =========================
 # Geo 数据获取
